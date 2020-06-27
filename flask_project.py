@@ -14,6 +14,7 @@ import requests
 import hashlib
 from flask_script import Manager, Server
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 ENV = 'prod'
@@ -125,7 +126,7 @@ def api_matches():
                 hashcode = int(abs(hash(hashcode_str)) % (13 ** 5))
                 #check if match has been predicted in the database
                 if db.session.query(MatchPredictions).filter(MatchPredictions.hashcode == hashcode).count() == 0:
-                        response = requests.get('https://csgopredict.herokuapp.com//api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
                         response = response.json()
                         prediction = MatchPredictions(str(hashcode), time_fixed_str, team1_str, team2_str,
                                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
@@ -177,7 +178,12 @@ def predict():
 def job_getstats():
     for key in list(TEAMS):       
             teamLink = TEAMS.get(key)
-            driver = webdriver.Chrome(ChromeDriverManager().install())
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--no-sandbox")
+            driver = webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options = chrome_options)
             link = 'https://www.hltv.org/team/' + teamLink 
             driver.get(link)
             #team = driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div[1]/div/div[1]/div[1]')
