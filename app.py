@@ -292,6 +292,7 @@ def job_getmatches():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
+    print team_stats
     job_getmatches()
 
 # Shutdown your cron thread if the web process is stopped
