@@ -118,21 +118,21 @@ def api_matches():
                 matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 # time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link
-                time_fixed_str = matches_json.get(match_json)[1]
-                team1_str = matches_json.get(match_json)[2]
-                team2_str = matches_json.get(match_json)[3]
-                match_link = matches_json.get(match_json)[6].strip()
-                hashcode_str = time_fixed_str.strip() + team1_str.strip() + team2_str.strip()
-                hashcode = int(abs(hash(hashcode_str)) % (13 ** 5))
-                #check if match has been predicted in the database
-                if db.session.query(MatchPredictions).filter(MatchPredictions.hashcode == hashcode).count() == 0:
-                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                        response = response.json()
-                        prediction = MatchPredictions(str(hashcode), time_fixed_str, team1_str, team2_str,
-                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
-                        db.session.add(prediction)
-                        db.session.commit()
-                        #handle exception (model not loaded)
+                # time_fixed_str = matches_json.get(match_json)[1]
+                # team1_str = matches_json.get(match_json)[2]
+                # team2_str = matches_json.get(match_json)[3]
+                # match_link = matches_json.get(match_json)[6].strip()
+                # hashcode_str = time_fixed_str.strip() + team1_str.strip() + team2_str.strip()
+                # hashcode = int(abs(hash(hashcode_str)) % (13 ** 5))
+                # #check if match has been predicted in the database
+                # if db.session.query(MatchPredictions).filter(MatchPredictions.hashcode == hashcode).count() == 0:
+                #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                #         response = response.json()
+                #         prediction = MatchPredictions(str(hashcode), time_fixed_str, team1_str, team2_str,
+                #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
+                #         db.session.add(prediction)
+                #         db.session.commit()
+                #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
         return jsonify(matches_json)
