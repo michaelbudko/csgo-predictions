@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> NAME OF WEBSITE </title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script type="text/javascript" src = "{{ url_for('static', filename='matches_display.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS.css') }}">
+</head>
+<body>
+    <h2>Matches</h2> 
+     <div id="MatchesDiv"></div>
+    <script type="text/javascript">
+        display_matches('{{matches|tojson}}','{{teams|tojson}}')
+     </script>
+</body>
+</html>

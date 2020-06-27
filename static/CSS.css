@@ -1,0 +1,87 @@
+.MatchBody {
+    margin-bottom: 50px;
+    background-color:#ffffff;
+}
+
+.MatchHeader {
+    margin-bottom: 0;
+    background-color: #f1f1f1;
+    height: 30px;
+}
+.team1_name {
+    /* display: inline-flex; */
+    float:left;
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+body {
+    background-color: #dddee0
+}
+
+.matchPrediction {
+    text-align: center;
+}
+.predictButton{
+    margin-bottom: 3%;
+}
+.team1_probability{
+    float: left;
+    margin-left: 10%;
+    margin-top: 1%;
+}
+.team2_probability{
+    float: right;
+    margin-right: 10%;
+    margin-top: 1%;
+}
+.team1_div{
+    display: inline-block;
+    margin-left: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.team2_div{
+    margin-right: 25px;
+    margin-top: 15px;
+    margin-bottom:15px;
+    float:right;
+}
+
+.team2_name {
+    /* display: inline-flex; */
+    margin-left: 10px;
+    font-size: 15px;
+    float: right;
+    margin-right: 10px;
+}
+
+.team1_img {
+    margin-left: 15px;
+    width:50px;
+    height:50px;
+}
+
+.team2_img {
+    margin-left: 15px;
+    width:50px;
+    height:50px;
+}
+
+
+.timeMatch {
+    margin-top: 0;
+}
+
+.MatchDiv {
+    margin-left: 15%;
+    margin-right: auto;
+    width: 30%;
+    display: inline-block;
+}
+
+.MatchesDiv {
+    display: inline;
+}
+
