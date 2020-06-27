@@ -53,35 +53,35 @@ matches_list = []
 matches_discarded = []
 team_stats ={}
 TEAMS = {
-  "Na'Vi": "4608/natus-vincere",
-  "Fnatic": "4991/fnatic",
+#   "Na'Vi": "4608/natus-vincere",
+#   "Fnatic": "4991/fnatic",
 #   "Astralis": "6665/astralis",
 #   "mousesports" : "4494/mousesports", 
   "G2" : "5995/g2",
-  "Liquid" : "5973/liquid",
-  "EG" : "10399/evil-geniuses",
-  "FaZe" : "6667/faze",
+#   "Liquid" : "5973/liquid",
+#   "EG" : "10399/evil-geniuses",
+#   "FaZe" : "6667/faze",
 #   "100 Thieves" : "8474/100-thieves",
-  "NiP" : "4411/nip",
-  "OG" : "10503/og",
-  "BIG" : "7532/big",
-  "mibr" : "9215/mibr",
-   "Ence" : "4869/ence",
+#   "NiP" : "4411/nip",
+#   "OG" : "10503/og",
+#   "BIG" : "7532/big",
+#   "mibr" : "9215/mibr",
+#    "Ence" : "4869/ence",
   "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
     # "Cloud9" : "5752/cloud9",
     # "Sprout" : "8637/sprout",
-    "Vitality" : "9565/vitality",
-    "pro100" : "7898/pro100",
+    # "Vitality" : "9565/vitality",
+    # "pro100" : "7898/pro100",
     # "Heretics" : "8346/heretics",
-    "coL" : "5005/complexity",
-    "forZe" : "8135/forze",
-    "FURIA" : "8297/furia",
-    "Spirit" : "7020/spirit",
+    # "coL" : "5005/complexity",
+    # "forZe" : "8135/forze",
+    # "FURIA" : "8297/furia",
+    # "Spirit" : "7020/spirit",
 #   "North" : "7533/north",
 #   "HAVU" : 7865/havu",
-    "VP" : "5378/virtuspro",
-    "MAD Lions" : "8362/mad-lions"
+    # "VP" : "5378/virtuspro",
+    # "MAD Lions" : "8362/mad-lions"
 #   "Gen.G" : "10514/geng",
 #   'Winstrike': '9183/winstrike',
 #   'c0ntact': '10606/c0ntact',
@@ -240,10 +240,6 @@ def home():
 def discarded():
     return str(matches_discarded)
 
-@app.route('/test')
-def test():
-    return str(test_int)
-
 @cron.interval_schedule(minutes = 10)
 def job_getmatches():
     from webdriver_manager.chrome import ChromeDriverManager
@@ -252,7 +248,12 @@ def job_getmatches():
     from selenium.webdriver.common.keys import Keys
     import time
     import math
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options = chrome_options)
     driver.get('https://csgolounge.com/')
     time.sleep(7)
     message = {}
