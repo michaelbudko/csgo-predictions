@@ -125,7 +125,7 @@ def api_matches():
                 hashcode = int(abs(hash(hashcode_str)) % (13 ** 5))
                 #check if match has been predicted in the database
                 if db.session.query(MatchPredictions).filter(MatchPredictions.hashcode == hashcode).count() == 0:
-                        response = requests.get('http://127.0.0.1:5000/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                        response = requests.get('https://csgopredict.herokuapp.com//api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
                         response = response.json()
                         prediction = MatchPredictions(str(hashcode), time_fixed_str, team1_str, team2_str,
                                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
@@ -278,7 +278,7 @@ def job_getmatches():
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
     driver.close()
     import requests
-    r = requests.post('http://127.0.0.1:5000/api/matches', json=message)
+    r = requests.post('https://csgopredict.herokuapp.com/api/matches', json=message)
     r.status_code
     r.json()
 
