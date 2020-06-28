@@ -77,10 +77,10 @@ TEAMS = {
     # "coL" : "5005/complexity",
     # "forZe" : "8135/forze",
     # "FURIA" : "8297/furia",
-    # "Spirit" : "7020/spirit",
+    "Spirit" : "7020/spirit",
 #   "North" : "7533/north",
 #   "HAVU" : 7865/havu",
-    # "VP" : "5378/virtuspro",
+    "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
 #   "Gen.G" : "10514/geng",
 #   'Winstrike': '9183/winstrike',
