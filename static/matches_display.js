@@ -37,7 +37,7 @@ function display_matches(matches_array, teams) {
                 matchPrediction.setAttribute('class', 'matchPrediction')
                 matchPrediction.setAttribute('id', 'matchPrediction_' + i)
                 var button = document.createElement("button");
-                button.innerHTML = "Make Prediction";
+                button.innerHTML = "Predict";
                 button.setAttribute("class", "predictButton")
                 button.setAttribute("data-team1", team1_name.textContent)
                 button.setAttribute("data-team2", team2_name.textContent)

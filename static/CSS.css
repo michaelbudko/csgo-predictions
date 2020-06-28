@@ -1,24 +1,38 @@
 .MatchBody {
     margin-bottom: 50px;
     background-color:#ffffff;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 
 .MatchHeader {
     margin-bottom: 0;
     background-color: #f1f1f1;
-    height: 30px;
+    height: 40px;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
 }
 .team1_name {
     /* display: inline-flex; */
     float:left;
-    font-size: 15px;
+    font-size: 20px;
     margin-left: 10px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.team2_name {
+    /* display: inline-flex; */
+    margin-left: 10px;
+    font-size: 20px;
+    float: right;
+    margin-right: 10px;
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
-    background-color: #dddee0
+    margin-top: 23px;
+    background-color: #dddee0;
 }
-
 .matchPrediction {
     text-align: center;
 }
@@ -27,61 +41,63 @@ body {
 }
 .team1_probability{
     float: left;
-    margin-left: 10%;
+    margin-left: 20%;
     margin-top: 1%;
+    font-family: 'Roboto', sans-serif;
+
 }
 .team2_probability{
     float: right;
-    margin-right: 10%;
+    margin-right: 20%;
     margin-top: 1%;
+    font-family: 'Roboto', sans-serif;
 }
 .team1_div{
     display: inline-block;
-    margin-left: 25px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-left: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .team2_div{
-    margin-right: 25px;
-    margin-top: 15px;
-    margin-bottom:15px;
+    margin-right: 40px;
+    margin-top: 5px;
+    margin-bottom:5px;
     float:right;
 }
 
-.team2_name {
-    /* display: inline-flex; */
-    margin-left: 10px;
-    font-size: 15px;
-    float: right;
-    margin-right: 10px;
-}
-
 .team1_img {
-    margin-left: 15px;
+    margin-left: 20px;
     width:50px;
     height:50px;
+    margin-top: 5px;
 }
 
 .team2_img {
-    margin-left: 15px;
+    margin-right: 20px;
     width:50px;
     height:50px;
+    margin-top: 5px;
 }
 
 
 .timeMatch {
-    margin-top: 0;
+    margin-top: 0px;
+    padding-top: 0px;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Work Sans', sans-serif;
 }
 
 .MatchDiv {
-    margin-left: 15%;
+    margin-left: 13%;
     margin-right: auto;
     width: 30%;
     display: inline-block;
 }
 
 .MatchesDiv {
+    padding-top: 20px;
     display: inline;
 }
 

@@ -5,9 +5,13 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script type="text/javascript" src = "{{ url_for('static', filename='matches_display.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h2>Matches</h2> 
+    <h2 style="text-align:center; font-family: 'Montserrat', sans-serif;">CS:GO Matches Prediction</h2> 
      <div id="MatchesDiv"></div>
     <script type="text/javascript">
         display_matches('{{matches|tojson}}','{{teams|tojson}}')
