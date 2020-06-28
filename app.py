@@ -270,16 +270,16 @@ def job_getmatches():
         match_link = full_match_box.find('a', class_='lounge-match')['href']
         contains1 = False
         contains2 = False
-        for key in TEAMS:
-            if team1_str.replace(" ", "")  == key:
-                contains1 = True
-            if team2_str.replace(" ", "")  == key:
-                contains2 = True
-        if (contains1 and contains2):
-            matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
-    #     matches.append([time_fixed_str, team1_str, team2_str])
         tens = math.floor(i/10) 
         ones = i % 10
+        # for key in TEAMS:
+        #     if team1_str.replace(" ", "")  == key:
+        #         contains1 = True
+        #     if team2_str.replace(" ", "")  == key:
+        #         contains2 = True
+        # if (contains1 and contains2):
+        #     matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
+    #     matches.append([time_fixed_str, team1_str, team2_str])
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
     driver.close()
     import requests
