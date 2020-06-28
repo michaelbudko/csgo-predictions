@@ -132,6 +132,7 @@ def api_matches():
                 #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
                 #         db.session.add(prediction)
                 #         db.session.commit()
+                # 
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
