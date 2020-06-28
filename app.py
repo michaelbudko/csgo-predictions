@@ -62,23 +62,23 @@ TEAMS = {
 #   "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
 #   "100 Thieves" : "8474/100-thieves",
-#   "NiP" : "4411/nip",
-#   "OG" : "10503/og",
+  "NiP" : "4411/nip",
+  "OG" : "10503/og",
   "BIG" : "7532/big",
 #   "mibr" : "9215/mibr",
    "Ence" : "4869/ence",
-#   "Godsent" : "6902/godsent",
+  "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
     "Cloud9" : "5752/cloud9",
     # "Sprout" : "8637/sprout",
-    # "Vitality" : "9565/vitality",
+    "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
     # "Heretics" : "8346/heretics",
     # "coL" : "5005/complexity",
-    # "forZe" : "8135/forze",
+    "forZe" : "8135/forze",
     "FURIA" : "8297/furia",
     "Spirit" : "7020/spirit",
-#   "North" : "7533/north",
+  "North" : "7533/north",
 #   "HAVU" : 7865/havu",
     "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
@@ -272,14 +272,14 @@ def job_getmatches():
         contains2 = False
         tens = math.floor(i/10) 
         ones = i % 10
-        # for key in TEAMS:
-        #     if team1_str.replace(" ", "")  == key:
-        #         contains1 = True
-        #     if team2_str.replace(" ", "")  == key:
-        #         contains2 = True
-        # if (contains1 and contains2):
-        #     matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
-    #     matches.append([time_fixed_str, team1_str, team2_str])
+        for key in TEAMS:
+            if team1_str.replace(" ", "")  == key:
+                contains1 = True
+            if team2_str.replace(" ", "")  == key:
+                contains2 = True
+        if (contains1 and contains2):
+            matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
+        matches.append([time_fixed_str, team1_str, team2_str])
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
     driver.close()
     import requests
