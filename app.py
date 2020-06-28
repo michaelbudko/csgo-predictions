@@ -29,7 +29,7 @@ db = SQLAlchemy(app)
 
 class MatchPredictions(db.Model):
     _tablename_ = 'Match Predictions'
-    hashcode = db.Column(db.BigInteger, primary_key = True)
+    match_id = db.Column(db.BigInteger, primary_key = True)
     match_date = db.Column(db.String(100))
     team1_name = db.Column(db.String(100))
     team2_name = db.Column(db.String(100))
@@ -38,9 +38,9 @@ class MatchPredictions(db.Model):
     team1_probability  =  db.Column(db.Float)
     team2_probability =  db.Column(db.Float)
 
-    def __init__(self, hashcode, match_date, team1_name, team2_name, 
+    def __init__(self, match_id, match_date, team1_name, team2_name, 
                 match_link, team1_win, team1_probability, team2_probability):
-                self.hashcode = hashcode
+                self.match_id = match_id
                 self.match_date = match_date
                 self.team1_name = team1_name
                 self.team2_name = team2_name
@@ -117,22 +117,19 @@ def api_matches():
                 # add to list of matches (global var)
                 matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
-                # time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link
-                # time_fixed_str = matches_json.get(match_json)[1]
-                # team1_str = matches_json.get(match_json)[2]
-                # team2_str = matches_json.get(match_json)[3]
-                # match_link = matches_json.get(match_json)[6].strip()
-                # hashcode_str = time_fixed_str.strip() + team1_str.strip() + team2_str.strip()
-                # hashcode = int(abs(hash(hashcode_str)) % (13 ** 5))
+                time_fixed_str = matches_json.get(match_json)[1]
+                team1_str = matches_json.get(match_json)[2]
+                team2_str = matches_json.get(match_json)[3]
+                match_link = matches_json.get(match_json)[6].strip()
+                match_id = ''.join(letter for letter in match_link if letter.isdigit())
                 # #check if match has been predicted in the database
-                # if db.session.query(MatchPredictions).filter(MatchPredictions.hashcode == hashcode).count() == 0:
-                #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                #         response = response.json()
-                #         prediction = MatchPredictions(str(hashcode), time_fixed_str, team1_str, team2_str,
-                #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
-                #         db.session.add(prediction)
-                #         db.session.commit()
-                # 
+                if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                        response = response.json()
+                        prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
+                        db.session.add(prediction)
+                        db.session.commit()
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
