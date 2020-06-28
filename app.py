@@ -69,7 +69,7 @@ TEAMS = {
    "Ence" : "4869/ence",
 #   "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
-    # "Cloud9" : "5752/cloud9",
+    "Cloud9" : "5752/cloud9",
     # "Sprout" : "8637/sprout",
     # "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
@@ -82,12 +82,12 @@ TEAMS = {
 #   "HAVU" : 7865/havu",
     "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
-#   "Gen.G" : "10514/geng",
+  "Gen.G" : "10514/geng",
 #   'Winstrike': '9183/winstrike',
 #   'c0ntact': '10606/c0ntact',
   'Heroic': '7175/heroic',
 #   'Secret': '10488/secret',
-#   "Espada": '8669/espada',
+  "Espada": '8669/espada',
 #   'Hard Legion': "10421/hard-legion",
 }
 
@@ -289,7 +289,6 @@ def job_getmatches():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
-    print('starting first job')
     job_getstats()
     print(team_stats)
     job_getmatches()
