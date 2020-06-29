@@ -14,18 +14,20 @@
 }
 .team1_name {
     /* display: inline-flex; */
+    margin-top: 15px;
     float:left;
-    font-size: 20px;
-    margin-left: 10px;
+    font-size: 1.6vw;
+    margin-left: 0px;
     font-family: 'Nunito', sans-serif;
 }
 
 .team2_name {
     /* display: inline-flex; */
+    margin-top: 15px;
     margin-left: 10px;
-    font-size: 20px;
+    font-size: 1.6vw;
     float: right;
-    margin-right: 10px;
+    margin-right: 0px;
     font-family: 'Nunito', sans-serif;
 }
 
@@ -34,19 +36,26 @@ body {
     background-color: #dddee0;
 }
 .matchPrediction {
+    margin-left:0.6vw;
     text-align: center;
+    /* width: 9vw; */
+    display: flexbox;
 }
 .predictButton{
+    margin-left: 0px;
     margin-bottom: 3%;
+    width: 7vw;
+    font-size: 1vw;
 }
 .team1_probability{
+    font-size: 1.45vw;
     float: left;
     margin-left: 20%;
     margin-top: 1%;
     font-family: 'Roboto', sans-serif;
-
 }
 .team2_probability{
+    font-size: 1.45vw;
     float: right;
     margin-right: 20%;
     margin-top: 1%;
@@ -54,34 +63,35 @@ body {
 }
 .team1_div{
     display: inline-block;
-    margin-left: 40px;
+    margin-left: 3.5vw;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
 .team2_div{
-    margin-right: 40px;
+    margin-right: 3.5vw;
     margin-top: 5px;
     margin-bottom:5px;
     float:right;
 }
 
 .team1_img {
-    margin-left: 20px;
-    width:50px;
-    height:50px;
-    margin-top: 5px;
+    margin-left: 1.2vw;
+    width:3.5vw;
+    height:3.5vw;
+    margin-top: 10px;
 }
 
 .team2_img {
-    margin-right: 20px;
-    width:50px;
-    height:50px;
-    margin-top: 5px;
+    margin-right: 1.2vw;
+    width:3.5vw;
+    height:3.5vw;
+    margin-top: 10px;
 }
 
 
 .timeMatch {
+    font-size: 1.35vw;
     margin-top: 0px;
     padding-top: 0px;
     text-align: center;
@@ -100,4 +110,3 @@ body {
     padding-top: 20px;
     display: inline;
 }
-
