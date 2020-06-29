@@ -103,7 +103,7 @@ cron.start()
 def api_matches():
     if(request.method == 'POST'): 
         global matches_list 
-        matches_list = []
+        matches_list_temp = []
         matches_json = request.get_json()
         for match_json in matches_json:
             contains1 = False
@@ -115,7 +115,7 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
-                matches_list.append(matches_json.get(match_json))
+                matches_list_temp.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
                 team1_str = matches_json.get(match_json)[2]
@@ -133,6 +133,7 @@ def api_matches():
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
+        matches_list = matches_list_temp
         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
@@ -258,7 +259,7 @@ def job_getmatches():
     i = 0
     soup = BeautifulSoup(driver.page_source, "html5lib")
     full_matches_box = soup.find_all('div', class_='lounge-bets-items__item sys-betting bet_coming')
-    matches = []
+    # matches = []
     for full_match_box in full_matches_box:
         i= i +1 
         time_fixed = full_match_box.find('div', class_='lounge-match-date__date sys-time-fixed')
@@ -277,9 +278,9 @@ def job_getmatches():
                 contains1 = True
             if team2_str.replace(" ", "")  == key:
                 contains2 = True
-        if (contains1 and contains2):
-            matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
-        matches.append([time_fixed_str, team1_str, team2_str])
+        # if (contains1 and contains2):
+        #     matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
+        # matches.append([time_fixed_str, team1_str, team2_str])
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
     driver.close()
     import requests
