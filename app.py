@@ -129,13 +129,13 @@ def api_matches():
                 match_link = matches_json.get(match_json)[6].strip()
                 match_id = ''.join(letter for letter in match_link if letter.isdigit())
                 # #check if match has been predicted in the database
-                # if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                #         response = response.json()
-                #         prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
-                #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"))
-                #         db.session.add(prediction)
-                #         db.session.commit()
+                if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                        response = response.json()
+                        prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
+                        db.session.add(prediction)
+                        db.session.commit()
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
