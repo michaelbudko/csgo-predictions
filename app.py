@@ -278,33 +278,68 @@ def job_getmatches():
         contains2 = False
         tens = math.floor(i/10) 
         ones = i % 10
-        # for key in TEAMS:
-        #     if team1_str.replace(" ", "")  == key:
-        #         contains1 = True
-        #     if team2_str.replace(" ", "")  == key:
-        #         contains2 = True
-        # if (contains1 and contains2):
-        #     matches_list.append([str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link])
-        # matches.append([time_fixed_str, team1_str, team2_str])
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
     driver.close()
     import requests
     r = requests.post('https://csgopredict.herokuapp.com/api/matches', json=message)
-    # r.status_code
-    # r.json()
+
+
+@cron.interval_schedule(minutes = 15)
+def job_updatedb():
+    result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    d, past_matches = {}, []
+    for rowproxy in result_set:
+        # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
+        for column, value in rowproxy.items():
+            # build up the dictionary
+            d = {**d, **{column: value}}
+        past_matches.append(d)
+    for i in range(0, len(past_matches)):
+        if (past_matches[i].get('team1_won') == -1): 
+            link = 'https://csgolounge.com' + past_matches[i].get('match_link')
+            import time
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            driver.get(link)
+            time.sleep(8)
+            team1_won = -1
+            WINNER_COLOR = 'rgba(244, 121, 0, 1)'
+            team1_div = driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[1]/div/div[1]/div[1]')
+            team1_color = str(team1_div.value_of_css_property("color"))
+            team2_div = driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/div[1]')
+            team2_color = str(team2_div.value_of_css_property("color"))
+            team1_coeff = driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[1]/div/div[1]/div[2]/div[1]').text.replace('x', "")
+            team2_coeff = driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/div[2]/div[1]').text.replace('x', "")
+            if team1_color == WINNER_COLOR:
+                team1_won = 1
+            elif team2_color == WINNER_COLOR:
+                team1_won = 0
+            else:
+                team1_won = -1
+                team1_coeff = 0
+                team2_coeff = 0
+            driver.close()
+            #update cells in db using that information
+            match_id = past_matches[i].get('match_id')
+            match = db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).one()
+            match.team1_coeff = team1_coeff
+            db.session.commit()
+            match.team2_coeff = team2_coeff
+            db.session.commit()
+            match.team1_won = team1_won
+            db.session.commit()
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
-    print(team_stats)
+    # print(team_stats)
     job_getmatches()
+    job_updatedb()
 
 # Shutdown your cron thread if the web process is stopped
 atexit.register(lambda: cron.shutdown(wait=False))
 
 if __name__ == '__main__':
     app.run(threaded=True, use_reloader=False)
-    # job_function()
 
 
 
