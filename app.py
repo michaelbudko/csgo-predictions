@@ -310,8 +310,3 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-    # https://medium.com/@mikelcbrowne/running-chromedriver-with-python-selenium-on-heroku-acc1566d161c
