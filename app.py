@@ -65,7 +65,7 @@ TEAMS = {
 #   "mousesports" : "4494/mousesports", 
   "G2" : "5995/g2",
   "Liquid" : "5973/liquid",
-#   "EG" : "10399/evil-geniuses",
+  "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
   "100 Thieves" : "8474/100-thieves",
   "NiP" : "4411/nip",
