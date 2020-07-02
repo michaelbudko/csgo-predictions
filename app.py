@@ -67,7 +67,7 @@ TEAMS = {
   "Liquid" : "5973/liquid",
 #   "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
-#   "100 Thieves" : "8474/100-thieves",
+  "100 Thieves" : "8474/100-thieves",
   "NiP" : "4411/nip",
   "OG" : "10503/og",
   "BIG" : "7532/big",
@@ -76,7 +76,7 @@ TEAMS = {
   "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
     "Cloud9" : "5752/cloud9",
-    # "Sprout" : "8637/sprout",
+    "Sprout" : "8637/sprout",
     "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
     # "Heretics" : "8346/heretics",
@@ -94,7 +94,7 @@ TEAMS = {
   'Heroic': '7175/heroic',
 #   'Secret': '10488/secret',
   "Espada": '8669/espada',
-#   'Hard Legion': "10421/hard-legion",
+  'Hard Legion': "10421/hard-legion",
 }
 
 
@@ -109,7 +109,7 @@ cron.start()
 def api_matches():
     if(request.method == 'POST'): 
         global matches_list 
-        matches_list_temp = []
+        matches_list = []
         matches_json = request.get_json()
         for match_json in matches_json:
             contains1 = False
@@ -121,7 +121,7 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
-                matches_list_temp.append(matches_json.get(match_json))
+                matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
                 team1_str = matches_json.get(match_json)[2]
@@ -139,7 +139,6 @@ def api_matches():
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
-        matches_list = matches_list_temp
         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
