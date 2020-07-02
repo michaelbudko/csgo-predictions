@@ -37,9 +37,12 @@ class MatchPredictions(db.Model):
     team1_win  =  db.Column(db.Integer)
     team1_probability  =  db.Column(db.Float)
     team2_probability =  db.Column(db.Float)
+    team1_won  =  db.Column(db.Integer)
+    team1_coeff = db.Column(db.Float)
+    team2_coeff = db.Column(db.Float)
 
     def __init__(self, match_id, match_date, team1_name, team2_name, 
-                match_link, team1_win, team1_probability, team2_probability):
+                match_link, team1_win, team1_probability, team2_probability, team1_won, team1_coeff, team2_coeff):
                 self.match_id = match_id
                 self.match_date = match_date
                 self.team1_name = team1_name
@@ -48,6 +51,9 @@ class MatchPredictions(db.Model):
                 self.team1_win = team1_win
                 self.team1_probability = team1_probability
                 self.team2_probability = team2_probability
+                self.team1_won = team1_won
+                self.team1_coeff = team1_coeff
+                self.team2_coeff = team2_coeff
 
 matches_list = []
 matches_discarded = []
