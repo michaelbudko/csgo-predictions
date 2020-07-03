@@ -244,6 +244,10 @@ def home():
 def discarded():
     return str(matches_discarded)
 
+@app.route('/teamstats')
+def teamstats():
+    return (str(team_stats))
+
 @cron.interval_schedule(minutes = 10)
 def job_getmatches():
     from webdriver_manager.chrome import ChromeDriverManager
