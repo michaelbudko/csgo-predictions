@@ -180,6 +180,7 @@ def predict():
 
 @cron.interval_schedule(minutes=25)
 def job_getstats():
+    team_stats_temp = {}
     for key in list(TEAMS):       
             teamLink = TEAMS.get(key)
             chrome_options = webdriver.ChromeOptions()
@@ -231,8 +232,10 @@ def job_getstats():
                 Impact = Impact + stats[3]
                 DPR = DPR + stats[1]
                 KPR = KPR + stats[5]
-            team_stats[key] = [ADR, Raiting, KAST, Impact, DPR, KPR, float(Rank)]
+            team_stats_temp[key] = [ADR, Raiting, KAST, Impact, DPR, KPR, float(Rank)]
             driver.close()
+    global team_stats
+    team_stats = team_stats_temp
     # return str(team_stats)
 
 
