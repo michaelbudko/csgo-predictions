@@ -241,6 +241,18 @@ def job_getstats():
 def home():
     return render_template('home.html', matches = matches_list, teams = TEAMS, team_stats = team_stats)
 
+@app.route("/past")
+def past():
+    result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    d, past_matches = {}, []
+    for rowproxy in result_set:
+        # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
+        for column, value in rowproxy.items():
+            # build up the dictionary
+            d = {**d, **{column: value}}
+        past_matches.append(d)
+    return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
+
 @app.route('/discarded')
 def discarded():
     return str(matches_discarded)
