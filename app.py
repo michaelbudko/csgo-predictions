@@ -108,7 +108,8 @@ cron.start()
 @app.route("/api/matches", methods=["GET", "POST"])
 def api_matches():
     if(request.method == 'POST'): 
-        matches_list_temp = []
+        global matches_list 
+        matches_list = []
         matches_json = request.get_json()
         for match_json in matches_json:
             contains1 = False
@@ -120,7 +121,7 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
-                matches_list_temp.append(matches_json.get(match_json))
+                matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
                 team1_str = matches_json.get(match_json)[2]
@@ -138,8 +139,6 @@ def api_matches():
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
-        global matches_list 
-        matches_list = matches_list_temp
         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
