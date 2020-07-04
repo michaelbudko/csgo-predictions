@@ -3,7 +3,7 @@
 <head>
     <title> CS:GO Predict</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script type="text/javascript" src = "{{ url_for('static', filename='matches_display.js') }}"></script>
+    <script type="text/javascript" src = "{{ url_for('static', filename='past_matches_display.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
@@ -13,12 +13,12 @@
 <body>
     <h2 style="text-align:center; font-family: 'Montserrat', sans-serif;">CS:GO Matches Prediction</h2> 
     <div class = miniHeader>
-        <a id = 'currentLink' href="/">Future</a>
-        <a href="/past">Past</a>
+        <a href="/">Future</a>
+        <a id = 'currentLink' href="/past">Past</a>
     </div>
-     <div id="MatchesDiv"></div>
-    <script type="text/javascript">
-        display_matches('{{matches|tojson}}','{{teams|tojson}}')
+     <div id="PastMatchesDiv"></div>
+     <script type="text/javascript">
+        display_matches('{{past_matches|tojson}}','{{teams|tojson}}')
      </script>
 </body>
 </html>

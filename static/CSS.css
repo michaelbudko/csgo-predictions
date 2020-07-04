@@ -4,13 +4,26 @@
     border-bottom-right-radius: 50px;
     border-bottom-left-radius: 50px;
 }
-
+.PastMatchBody {
+    display: flex;
+    margin-bottom: 3px;
+    background-color:#ffffff;
+    border-bottom-right-radius: 1.7vw;
+    border-bottom-left-radius: 1.7vw;
+}
 .MatchHeader {
     margin-bottom: 0;
     background-color: #f1f1f1;
     height: 40px;
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
+}
+.PastMatchHeader {
+    margin-bottom: 0;
+    background-color: #f1f1f1;
+    height: 30px;
+    border-top-right-radius: 1.7vw;
+    border-top-left-radius: 1.7vw;
 }
 .team1_name {
     /* display: inline-flex; */
@@ -20,7 +33,6 @@
     margin-left: 0px;
     font-family: 'Nunito', sans-serif;
 }
-
 .team2_name {
     /* display: inline-flex; */
     margin-top: 15px;
@@ -31,6 +43,43 @@
     font-family: 'Nunito', sans-serif;
 }
 
+.past_team1_name {
+    margin-top: 6px;
+    margin-bottom: 0px;
+    float:left;
+    font-size: 1.2vw;
+    margin-left: 0px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.past_team2_name {
+    margin-top: 6px;
+    margin-bottom: 0px;
+    float:right;
+    margin-left: 0px;
+    font-size: 1.2vw;
+    margin-right: 1px;
+    font-family: 'Nunito', sans-serif;
+}
+.past_team1_coeff {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    float:left;
+    font-size: .9vw;
+    margin-right: 6px;
+    font-family: 'Nunito', sans-serif;
+    color: gray;
+}
+.past_team2_coeff{
+    margin-top: 11px;
+    float:right;
+    margin-bottom: 0px;
+    margin-left: 5px;
+    font-size: .9vw;
+    margin-right: 0px;
+    font-family: 'Nunito', sans-serif;
+    color: gray;
+}
 body {
     margin-top: 23px;
     background-color: #dddee0;
@@ -38,7 +87,7 @@ body {
 .matchPrediction {
     margin-left:0.6vw;
     text-align: center;
-    /* width: 9vw; */
+
     display: flexbox;
 }
 .predictButton{
@@ -67,29 +116,89 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
 .team2_div{
     margin-right: 3.5vw;
     margin-top: 5px;
     margin-bottom:5px;
     float:right;
 }
+.past_team1_div{
+    display: inline-block;
+    margin-left: 2.4vw;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+.past_team2_div{
+    margin-left: 2.5vw;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
 
+.predictedDiv {
+    margin-left:auto; 
+    margin-right:2vw;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.predictedProbability {
+    font-family: 'Nunito', sans-serif;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    float:left;
+    font-size: 1.1vw;
+    margin-left: 0px;
+    margin-right: .5vw;
+    font-family: 'Nunito', sans-serif;
+}
+.predictionResult {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1vw;
+    float:right;
+    margin-top: 6px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.predictedTeamImg {
+    width:2vw;
+    height:2vw;
+    margin-top: 1px;
+    margin-right: 1vw;
+}
 .team1_img {
     margin-left: 1.2vw;
-    width:3.5vw;
-    height:3.5vw;
+    width:4vw;
+    height:4vw;
     margin-top: 10px;
 }
-
 .team2_img {
     margin-right: 1.2vw;
-    width:3.5vw;
-    height:3.5vw;
+    width:4vw;
+    height:4vw;
     margin-top: 10px;
 }
-
-
+.past_team1_img {
+    margin-left: .6vw;
+    width:2vw;
+    height:2vw;
+    margin-top: 4px;
+}
+.past_team2_img {
+    margin-right: .6vw;
+    width:2vw;
+    height:2vw;
+    margin-top: 4px;
+    margin-bottom: 0px;
+}
+.past_timeMatch {
+    font-size: 1vw;
+    margin-top: 0px;
+    margin-bottom: 1vw;
+    padding-top: 0px;
+    text-align: center;
+    padding-top: .7vw;
+    font-family: 'Work Sans', sans-serif;
+}
 .timeMatch {
     font-size: 1.35vw;
     margin-top: 0px;
@@ -98,15 +207,47 @@ body {
     padding: 10px;
     font-family: 'Work Sans', sans-serif;
 }
-
 .MatchDiv {
     margin-left: 13%;
     margin-right: auto;
     width: 30%;
     display: inline-block;
 }
-
+.PastMatchDiv {
+    margin-left: 31.5%;
+    width: 37%;
+    display: inline-block;
+}
 .MatchesDiv {
     padding-top: 20px;
     display: inline;
+}
+.miniHeader{
+    display: inline-block;
+    margin-left: 44vw;
+    text-align: center;
+    margin-bottom:1vw;
+}
+.miniHeader a {
+    padding: 0.5vw 0.725vw;
+    text-decoration: none;
+    color:black;
+    /* font-family: 'Work Sans', sans-serif; */
+    font-family: 'Nunito', sans-serif;
+}
+.miniHeader a:hover {
+    background-color: grey;
+    color: white;
+    border-bottom-right-radius: 1.7vw;
+    border-bottom-left-radius: 1.7vw;
+    border-top-right-radius: 1.7vw;
+    border-top-left-radius: 1.7vw;
+}
+#currentLink{
+    background-color: grey;
+    color: white;
+    border-bottom-right-radius: 1.7vw;
+    border-bottom-left-radius: 1.7vw;
+    border-top-right-radius: 1.7vw;
+    border-top-left-radius: 1.7vw;
 }
