@@ -110,7 +110,6 @@ cron.start()
 @app.route("/api/matches", methods=["GET", "POST"])
 def api_matches():
     if(request.method == 'POST'): 
-        global matches_list 
         matches_list_temp = []
         matches_json = request.get_json()
         for match_json in matches_json:
@@ -141,10 +140,16 @@ def api_matches():
                 #         #handle exception (model not loaded)
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
-        if (len(matches_list) != 0):
-            matches_list = []
-            for match in matches_list_temp:
-                matches_list.append(match)
+            # removing old matches that are not in new list
+            for match_in_list in matches_list:
+                found = False
+                for match_in_temp in matches_list_temp
+                    if (match_in_list == match_in_temp):
+                        found = True
+                if (not found):
+                    matches_list.remove(match_in_list)
+            for match_in_temp in matches_list_temp:
+                matches_list.append(match_in_temp)
         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
