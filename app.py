@@ -145,6 +145,7 @@ def api_matches():
                 found = False
                 for match_in_temp in matches_list_temp:
                     if (match_in_list == match_in_temp):
+                        matches_list.remove(match_in_list)
                         found = True
                 if (not found):
                     matches_list.remove(match_in_list)
