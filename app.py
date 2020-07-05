@@ -143,7 +143,7 @@ def api_matches():
             # removing old matches that are not in new list
             for match_in_list in matches_list:
                 found = False
-                for match_in_temp in matches_list_temp
+                for match_in_temp in matches_list_temp:
                     if (match_in_list == match_in_temp):
                         found = True
                 if (not found):
