@@ -55,7 +55,7 @@ class MatchPredictions(db.Model):
                 self.team1_coeff = team1_coeff
                 self.team2_coeff = team2_coeff
 
-matches_list = ['Init']
+matches_list = []
 matches_discarded = []
 team_stats ={}
 import datetime
