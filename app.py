@@ -58,6 +58,7 @@ class MatchPredictions(db.Model):
 matches_list = []
 matches_discarded = []
 team_stats ={}
+import datetime
 date_started = datetime.datetime.now()
 TEAMS = {
 #   "Na'Vi": "4608/natus-vincere",
@@ -349,7 +350,7 @@ def job_updatedb():
 @app.route('/date')
 def date_test():
     return(str(date_started))
-    
+
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
