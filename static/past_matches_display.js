@@ -1,8 +1,12 @@
 function display_matches(past_matches, teams) {
     past_matches = JSON.parse(past_matches)
     teams = JSON.parse(teams)
-    // show 5 more matches when button is pressed
     show_matches(past_matches);
+    // show 4 more matches when button is pressed
+    showDiv = document.getElementsByClassName('showDiv')[0]
+    $('.showDiv').click(function() {
+        $('#PastMatchesDiv div:hidden').slice(0,20).slideDown();
+      });
 }
 
 function show_matches(past_matches) {

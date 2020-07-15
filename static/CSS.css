@@ -222,6 +222,28 @@ body {
     padding-top: 20px;
     display: inline;
 }
+.showDiv{
+    margin-left: 44.5vw;
+    margin-top: .5vw;
+    width: 10vw;
+    background-color: white;
+    height:3vw;
+    text-align: center;
+    display: inline-block;
+    border-bottom-right-radius: 1.7vw;
+    border-bottom-left-radius: 1.7vw;
+    border-top-left-radius: 1.7vw;
+    border-top-right-radius: 1.7vw;
+}
+.showDiv p{
+    height: 1.5vw;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: .6vw;
+    margin-bottom: 0;
+    font-size: 1.3vw;
+    font-family: 'Nunito', sans-serif;
+}
 .miniHeader{
     display: inline-block;
     margin-left: 44vw;
