@@ -98,7 +98,8 @@ TEAMS = {
   "Espada": '8669/espada',
   'Hard Legion': "10421/hard-legion",
   'Syman': '8772/syman',
-  "ALTERNATE aTTaX": '4501/alternate-attax'
+  "ALTERNATE aTTaX": '4501/alternate-attax',
+  "SG.pro": '10105/sgpro'
 }
 
 
