@@ -96,9 +96,9 @@ TEAMS = {
   'Heroic': '7175/heroic',
 #   'Secret': '10488/secret',
   "Espada": '8669/espada',
-  'Hard Legion': "10421/hard-legion",
+  'HardLegion': "10421/hard-legion",
   'Syman': '8772/syman',
-  "ALTERNATE aTTaX": '4501/alternate-attax',
+  "ALTERNATEaTTaX": '4501/alternate-attax',
   "SG.pro": '10105/sgpro'
 }
 
