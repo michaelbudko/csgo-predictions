@@ -218,6 +218,9 @@ body {
     width: 37%;
     display: inline-block;
 }
+#PastMatchesDiv div:nth-child(n+5){
+    display: none;
+}
 .MatchesDiv {
     padding-top: 20px;
     display: inline;
