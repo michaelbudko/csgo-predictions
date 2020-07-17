@@ -119,9 +119,9 @@ def api_matches():
             contains1 = False
             contains2 = False
             for key in TEAMS:
-                if matches_json.get(match_json)[2].replace(" ", "")  == key:
+                if matches_json.get(match_json)[2].replace(" ", "")  == key.replace(" ", ""):
                     contains1 = True
-                if matches_json.get(match_json)[3].replace(" ", "")  == key:
+                if matches_json.get(match_json)[3].replace(" ", "")  == key.replace(" ", ""):
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
@@ -144,15 +144,13 @@ def api_matches():
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
             # removing old matches that are not in new list
-            for match_in_list in matches_list:
-                found = False
-                for match_in_temp in matches_list_temp:
-                    if (match_in_list == match_in_temp):
-                        matches_list.remove(match_in_list)
-                        found = True
-                if (not found):
-                    matches_list.remove(match_in_list)
             for match_in_temp in matches_list_temp:
+                found = False
+                for match_in_list in matches_list:
+                    while (not found):
+                        if (match_in_list == match_in_temp):
+                            matches_list.remove(match_in_list)
+                            found = True
                 matches_list.append(match_in_temp)
         return jsonify(matches_json)
 
