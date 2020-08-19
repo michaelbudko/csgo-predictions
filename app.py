@@ -57,7 +57,7 @@ class MatchPredictions(db.Model):
 
 matches_list = []
 matches_discarded = []
-team_stats ={}
+team_stats = {}
 import datetime
 date_started = datetime.datetime.now()
 TEAMS = {
@@ -81,7 +81,7 @@ TEAMS = {
     "Sprout" : "8637/sprout",
     "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
-    # "Heretics" : "8346/heretics",
+    "Heretics" : "8346/heretics",
     # "coL" : "5005/complexity",
     "forZe" : "8135/forze",
     "FURIA" : "8297/furia",
@@ -113,8 +113,9 @@ cron.start()
 @app.route("/api/matches", methods=["GET", "POST"])
 def api_matches():
     if(request.method == 'POST'): 
-        matches_list_temp = []
         matches_json = request.get_json()
+        global matches_list
+        del matches_list[:]
         for match_json in matches_json:
             contains1 = False
             contains2 = False
@@ -125,7 +126,7 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
-                matches_list_temp.append(matches_json.get(match_json))
+                matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
                 team1_str = matches_json.get(match_json)[2]
@@ -144,14 +145,14 @@ def api_matches():
             else:
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
             # removing old matches that are not in new list
-            for match_in_temp in matches_list_temp:
-                found = False
-                for match_in_list in matches_list:
-                    while (not found):
-                        if (match_in_list == match_in_temp):
-                            matches_list.remove(match_in_list)
-                            found = True
-                matches_list.append(match_in_temp)
+            # for match_in_temp in matches_list_temp:
+            #     found = False
+            #     for match_in_list in matches_list:
+            #         while (not found):
+            #             if (match_in_list == match_in_temp):
+            #                 matches_list.remove(match_in_list)
+            #                 found = True
+            #     matches_list.append(match_in_temp)
         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
