@@ -270,7 +270,7 @@ def past():
 def discarded():
     return str(matches_discarded)
 
-@app.route('/teamstats')
+@app.route('/api/teamstats')
 def teamstats():
     return (str(team_stats))
 
