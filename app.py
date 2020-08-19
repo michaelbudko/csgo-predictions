@@ -143,6 +143,7 @@ def api_matches():
                         db.session.commit()
                 #         #handle exception (model not loaded)
             else:
+                global matches_discarded
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
             # removing old matches that are not in new list
             # for match_in_temp in matches_list_temp:
