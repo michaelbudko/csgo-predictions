@@ -73,7 +73,7 @@ TEAMS = {
   "NiP" : "4411/nip",
   "OG" : "10503/og",
   "BIG" : "7532/big",
-#   "mibr" : "9215/mibr",
+  "mibr" : "9215/mibr",
    "Ence" : "4869/ence",
   "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
