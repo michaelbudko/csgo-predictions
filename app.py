@@ -126,51 +126,51 @@ cron = Scheduler(daemon=True)
 # Explicitly kick off the background thread
 cron.start()
 
-@app.route("/api/matches", methods=["GET", "POST"])
-def api_matches():
-    if(request.method == 'POST'): 
-        matches_json = request.get_json()
-        global matches_list
-        del matches_list[:]
-        for match_json in matches_json:
-            contains1 = False
-            contains2 = False
-            for key in TEAMS:
-                if matches_json.get(match_json)[2].replace(" ", "")  == key.replace(" ", ""):
-                    contains1 = True
-                if matches_json.get(match_json)[3].replace(" ", "")  == key.replace(" ", ""):
-                    contains2 = True
-            if (contains1 and contains2):
-                # add to list of matches (global var)
-                matches_list.append(matches_json.get(match_json))
-                # predict result and store in the database
-                time_fixed_str = matches_json.get(match_json)[1]
-                team1_str = matches_json.get(match_json)[2]
-                team2_str = matches_json.get(match_json)[3]
-                match_link = matches_json.get(match_json)[6].strip()
-                match_id = ''.join(letter for letter in match_link if letter.isdigit())
-                # #check if match has been predicted in the database
-                # if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                #         response = response.json()
-                #         prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
-                #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
-                #         db.session.add(prediction)
-                #         db.session.commit()
-                #         #handle exception (model not loaded)
-            else:
-                global matches_discarded
-                matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
-            # removing old matches that are not in new list
-            # for match_in_temp in matches_list_temp:
-            #     found = False
-            #     for match_in_list in matches_list:
-            #         while (not found):
-            #             if (match_in_list == match_in_temp):
-            #                 matches_list.remove(match_in_list)
-            #                 found = True
-            #     matches_list.append(match_in_temp)
-        return jsonify(matches_json)
+# @app.route("/api/matches", methods=["GET", "POST"])
+# def api_matches():
+#     if(request.method == 'POST'): 
+#         matches_json = request.get_json()
+#         global matches_list
+#         del matches_list[:]
+#         for match_json in matches_json:
+#             contains1 = False
+#             contains2 = False
+#             for key in TEAMS:
+#                 if matches_json.get(match_json)[2].replace(" ", "")  == key.replace(" ", ""):
+#                     contains1 = True
+#                 if matches_json.get(match_json)[3].replace(" ", "")  == key.replace(" ", ""):
+#                     contains2 = True
+#             if (contains1 and contains2):
+#                 # add to list of matches (global var)
+#                 matches_list.append(matches_json.get(match_json))
+#                 # predict result and store in the database
+#                 time_fixed_str = matches_json.get(match_json)[1]
+#                 team1_str = matches_json.get(match_json)[2]
+#                 team2_str = matches_json.get(match_json)[3]
+#                 match_link = matches_json.get(match_json)[6].strip()
+#                 match_id = ''.join(letter for letter in match_link if letter.isdigit())
+#                 # #check if match has been predicted in the database
+#                 # if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+#                 #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+#                 #         response = response.json()
+#                 #         prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+#                 #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
+#                 #         db.session.add(prediction)
+#                 #         db.session.commit()
+#                 #         #handle exception (model not loaded)
+#             else:
+#                 global matches_discarded
+#                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
+#             # removing old matches that are not in new list
+#             # for match_in_temp in matches_list_temp:
+#             #     found = False
+#             #     for match_in_list in matches_list:
+#             #         while (not found):
+#             #             if (match_in_list == match_in_temp):
+#             #                 matches_list.remove(match_in_list)
+#             #                 found = True
+#             #     matches_list.append(match_in_temp)
+#         return jsonify(matches_json)
 
 @app.route("/api/model",  methods=["GET", "POST"])
 def api_teamstats():
@@ -332,19 +332,26 @@ def job_getmatches():
         # check if match is between two teams from the list
         contains1 = False
         contains2 = False
-        if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                        response = response.json()
-                        prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
-                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
-                        db.session.add(prediction)
-                        db.session.commit()
-        tens = math.floor(i/10) 
-        ones = i % 10
-        message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
+        for key in TEAMS:
+                if team1_str.replace(" ", "")  == key.replace(" ", ""):
+                    contains1 = True
+                if team2_str.replace(" ", "")  == key.replace(" ", ""):
+                    contains2 = True
+        if (contains1 and contains2):
+            # update db with prediction
+            if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+                            response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                            response = response.json()
+                            prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+                                                match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
+                            db.session.add(prediction)
+                            db.session.commit()
+            if db.session.query(UpcomingMatches).filter(UpcomingMatches.match_id == match_id).count() == 0:
+                            match = UpcomingMatches(match_id, time_fixed_str, team1_str, team2_str,
+                                                match_link)
+                            db.session.add(match)
+                            db.session.commit()
     driver.close()
-    import requests
-    r = requests.post('https://csgopredict.herokuapp.com/api/matches', json=message)
 
 
 @cron.interval_schedule(minutes = 15)
