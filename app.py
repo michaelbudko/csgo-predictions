@@ -55,6 +55,34 @@ class MatchPredictions(db.Model):
                 self.team1_coeff = team1_coeff
                 self.team2_coeff = team2_coeff
 
+class UpcomingMatches(db.Model):
+    _tablename_ = 'Upcoming Matches'
+    match_id = db.Column(db.BigInteger, primary_key = True)
+    match_date = db.Column(db.String(100))
+    team1_name = db.Column(db.String(100))
+    team2_name = db.Column(db.String(100))
+    match_link = db.Column(db.String(100))
+    team1_win  =  db.Column(db.Integer)
+    team1_probability  =  db.Column(db.Float)
+    team2_probability =  db.Column(db.Float)
+    team1_won  =  db.Column(db.Integer)
+    team1_coeff = db.Column(db.Float)
+    team2_coeff = db.Column(db.Float)
+
+    def __init__(self, match_id, match_date, team1_name, team2_name, 
+                match_link, team1_win, team1_probability, team2_probability, team1_won, team1_coeff, team2_coeff):
+                self.match_id = match_id
+                self.match_date = match_date
+                self.team1_name = team1_name
+                self.team2_name = team2_name
+                self.match_link = match_link
+                self.team1_win = team1_win
+                self.team1_probability = team1_probability
+                self.team2_probability = team2_probability
+                self.team1_won = team1_won
+                self.team1_coeff = team1_coeff
+                self.team2_coeff = team2_coeff
+
 matches_list = []
 matches_discarded = []
 team_stats = {}
@@ -114,6 +142,7 @@ cron.start()
 def api_matches():
     if(request.method == 'POST'): 
         matches_json = request.get_json()
+        global matches_list
         del matches_list[:]
         for match_json in matches_json:
             contains1 = False
@@ -365,10 +394,6 @@ def job_updatedb():
             db.session.commit()
             match.team1_won = team1_won
             db.session.commit()
-
-@app.route('/date')
-def date_test():
-    return(str(date_started))
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
