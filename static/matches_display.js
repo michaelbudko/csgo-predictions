@@ -6,7 +6,6 @@ function display_matches(teams) {
         request.open('GET', url, true)
         matches_array = []
         request.onload = function() {
-            console.log(this.response)
             matches_array = JSON.parse(this.response)
         }
         request.send()
@@ -22,7 +21,7 @@ function display_matches(teams) {
                 var MatchBody = document.createElement("div");
                 MatchBody.setAttribute("class", "MatchBody");
                 var timeMatch = document.createElement('p');
-                timeMatch.textContent += matches_array[i][1]; 
+                timeMatch.textContent += matches_array[i].match_date; 
                 timeMatch.setAttribute("class","timeMatch");
                 var team1_div = document.createElement("div");
                 team1_div.setAttribute("class", "team1_div");
@@ -30,18 +29,18 @@ function display_matches(teams) {
                 team2_div.setAttribute("class", "team2_div");
                 var team1_name = document.createElement('p');
                 team1_name.setAttribute("class", "team1_name");
-                team1_name.textContent += matches_array[i][2]; 
+                team1_name.textContent += matches_array[i].team1_name; 
                 var team1_img = document.createElement('img');
                 team1_img.setAttribute("class", "team1_img");
                 // team1_img.src = matches_array[i][4];
-                team1_img.src ='static/team_logos/' +  matches_array[i][2].replace(/\s/g, '') + '.png';
+                team1_img.src ='static/team_logos/' +  matches_array[i].team1_name.replace(/\s/g, '') + '.png';
                 var team2_name = document.createElement('p')
                 team2_name.setAttribute("class", "team2_name"); 
-                team2_name.textContent += matches_array[i][3]; 
+                team2_name.textContent += matches_array[i].team2_name; 
                 var team2_img = document.createElement('img');
                 team2_img.setAttribute("class", "team1_img");
                 // team2_img.src = matches_array[i][5];
-                team2_img.src = 'static/team_logos/' + matches_array[i][3].replace(/\s/g, '') + '.png';
+                team2_img.src = 'static/team_logos/' + matches_array[i].team2_name.replace(/\s/g, '') + '.png';
                 var matchPrediction = document.createElement('div');
                 matchPrediction.setAttribute('class', 'matchPrediction')
                 matchPrediction.setAttribute('id', 'matchPrediction_' + i)
