@@ -1,6 +1,14 @@
 
-function display_matches(matches_array, teams) {
-        matches_array = JSON.parse(matches_array)
+function display_matches(teams) {
+        // matches_array = JSON.parse(matches_array)
+        var request = new XMLHttpRequest()
+        url = 'api/upcoming_matches';
+        request.open('GET', url, true)
+        matches_array = []
+        request.onload = function() {
+            matches_array = JSON.parse(this.response)
+        }
+        request.send()
         teams = JSON.parse(teams)
         for (i = 0; i < matches_array.length; i++) {
             //check if team1 is one of the teams in the CONST team dictionary
