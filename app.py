@@ -289,10 +289,17 @@ def discarded():
     global matches_discarded
     return str(matches_discarded)
 
-@app.route('/matches_list')
+@app.route('api/upcoming_matches')
 def matches_list():
-    global matches_list
-    return (str(matches_list))
+    result_set = db.session.execute("SELECT * FROM upcoming_matches")  
+    d, upcoming_matches = {}, []
+    for rowproxy in result_set:
+        # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
+        for column, value in rowproxy.items():
+            # build up the dictionary
+            d = {**d, **{column: value}}
+        upcoming_matches.append(d)
+    return(str(upcoming_matches))
 
 @app.route('/api/teamstats')
 def teamstats():
