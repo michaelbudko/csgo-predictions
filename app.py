@@ -286,7 +286,6 @@ def past():
 
 @app.route('/discarded')
 def discarded():
-    global matches_discarded
     return str(matches_discarded)
 
 @app.route('/api/upcoming_matches')
@@ -357,6 +356,7 @@ def job_getmatches():
                             match = UpcomingMatches(match_id, time_fixed_str, team1_str, team2_str,
                                                 match_link)
                             db.session.add(match)
+                            print(match)
                             db.session.commit()
     driver.close()
 
