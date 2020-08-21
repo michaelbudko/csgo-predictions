@@ -150,13 +150,13 @@ def api_matches():
                 match_link = matches_json.get(match_json)[6].strip()
                 match_id = ''.join(letter for letter in match_link if letter.isdigit())
                 # #check if match has been predicted in the database
-                if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
-                        response = response.json()
-                        prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
-                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
-                        db.session.add(prediction)
-                        db.session.commit()
+                # if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+                #         response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                #         response = response.json()
+                #         prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+                #                             match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
+                #         db.session.add(prediction)
+                #         db.session.commit()
                 #         #handle exception (model not loaded)
             else:
                 global matches_discarded
@@ -292,7 +292,7 @@ def discarded():
 @app.route('/matches_list')
 def matches_list():
     global matches_list
-    return str(matches_list)
+    return (str(matches_list))
 
 @app.route('/api/teamstats')
 def teamstats():
@@ -319,9 +319,8 @@ def job_getmatches():
     i = 0
     soup = BeautifulSoup(driver.page_source, "html5lib")
     full_matches_box = soup.find_all('div', class_='lounge-bets-items__item sys-betting bet_coming')
-    # matches = []
     for full_match_box in full_matches_box:
-        i= i +1 
+        i= i + 1 
         time_fixed = full_match_box.find('div', class_='lounge-match-date__date sys-time-fixed')
         time_fixed_str = time_fixed.text
         team1_str = full_match_box.find('div', class_='lounge-team__title sys-t1name').text
@@ -329,8 +328,17 @@ def job_getmatches():
         team1_img = full_match_box.find('img', class_='sys-t1logo')['src']
         team2_img = full_match_box.find('img', class_='sys-t2logo')['src']
         match_link = full_match_box.find('a', class_='lounge-match')['href']
+        match_id = ''.join(letter for letter in match_link if letter.isdigit())
+        # check if match is between two teams from the list
         contains1 = False
         contains2 = False
+        if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+                        response = requests.get('https://csgopredict.herokuapp.com/api/predict' + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                        response = response.json()
+                        prediction = MatchPredictions(match_id, time_fixed_str, team1_str, team2_str,
+                                            match_link, response.get("Team1_Predicted_Win"), response.get("Probability_1"), response.get("Probability_2"), -1, 0.0 ,0.0)
+                        db.session.add(prediction)
+                        db.session.commit()
         tens = math.floor(i/10) 
         ones = i % 10
         message['match'+ str(tens)+ str(ones)] = [str(tens)+ str(ones), time_fixed_str, team1_str, team2_str, team1_img, team2_img, match_link]  
@@ -386,7 +394,6 @@ def job_updatedb():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
-    # print(team_stats)
     job_getmatches()
     job_updatedb()
 
