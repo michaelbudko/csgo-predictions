@@ -126,6 +126,7 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
+                global matches_list
                 matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
@@ -143,6 +144,7 @@ def api_matches():
                         db.session.commit()
                 #         #handle exception (model not loaded)
             else:
+                global matches_discarded
                 matches_discarded.append(matches_json.get(match_json)[2] + ' ' + matches_json.get(match_json)[3])
             # removing old matches that are not in new list
             # for match_in_temp in matches_list_temp:
@@ -269,10 +271,12 @@ def past():
 
 @app.route('/discarded')
 def discarded():
+    global matches_discarded
     return str(matches_discarded)
 
 @app.route('/api/teamstats')
 def teamstats():
+    global team_stats
     return (str(team_stats))
 
 @cron.interval_schedule(minutes = 10)
