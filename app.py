@@ -289,7 +289,7 @@ def discarded():
     global matches_discarded
     return str(matches_discarded)
 
-@app.route('api/upcoming_matches')
+@app.route('/api/upcoming_matches')
 def matches_list():
     result_set = db.session.execute("SELECT * FROM upcoming_matches")  
     d, upcoming_matches = {}, []
