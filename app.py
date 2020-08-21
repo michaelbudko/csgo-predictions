@@ -114,7 +114,6 @@ cron.start()
 def api_matches():
     if(request.method == 'POST'): 
         matches_json = request.get_json()
-        global matches_list
         del matches_list[:]
         for match_json in matches_json:
             contains1 = False
@@ -126,7 +125,6 @@ def api_matches():
                     contains2 = True
             if (contains1 and contains2):
                 # add to list of matches (global var)
-                global matches_list
                 matches_list.append(matches_json.get(match_json))
                 # predict result and store in the database
                 time_fixed_str = matches_json.get(match_json)[1]
@@ -273,6 +271,11 @@ def past():
 def discarded():
     global matches_discarded
     return str(matches_discarded)
+
+@app.route('/matches_list')
+def matches_list():
+    global matches_list
+    return str(matches_list)
 
 @app.route('/api/teamstats')
 def teamstats():
