@@ -6,6 +6,7 @@ function display_matches(teams) {
         request.open('GET', url, true)
         matches_array = []
         request.onload = function() {
+            console.log(this.response)
             matches_array = JSON.parse(this.response)
         }
         request.send()
