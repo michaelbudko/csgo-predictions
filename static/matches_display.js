@@ -14,6 +14,7 @@ function display_matches(teams) {
             //check if team1 is one of the teams in the CONST team dictionary
             // team2_contains = checkTeam(matches_array[i][3], teams);
             // if (true) {
+                console.log(matches_array.length)
                 var MatchDiv = document.createElement("div");
                 MatchDiv.setAttribute("class", "MatchDiv");
                 var MatchHeader = document.createElement("div");
@@ -94,6 +95,7 @@ function display_matches(teams) {
                     }
                 };
                 //display the results
+                console.log("almost done")
                 matchPrediction.appendChild(button)
                 MatchHeader.appendChild(timeMatch);
                 team1_div.appendChild(team1_name);
@@ -108,6 +110,7 @@ function display_matches(teams) {
                 MatchDiv.appendChild(MatchBody);
                 // var team1_contains = checkTeam(matches_array[i][3], teams);
                 MatchesDiv.appendChild(MatchDiv);
+                console.log("all working")
         // }
     }
     
