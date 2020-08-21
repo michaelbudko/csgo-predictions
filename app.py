@@ -64,7 +64,7 @@ class UpcomingMatches(db.Model):
     match_link = db.Column(db.String(100))
 
     def __init__(self, match_id, match_date, team1_name, team2_name, 
-                match_link, team1_win, team1_probability, team2_probability, team1_won, team1_coeff, team2_coeff):
+                match_link):
                 self.match_id = match_id
                 self.match_date = match_date
                 self.team1_name = team1_name
@@ -358,6 +358,8 @@ def job_getmatches():
                             db.session.add(match)
                             print(match)
                             db.session.commit()
+        else: 
+            matches_discarded.append([team1_str, team2_str])
     driver.close()
 
 
