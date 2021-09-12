@@ -208,17 +208,18 @@ def predict():
         }
         return jsonify(message)
 
-
 @cron.interval_schedule(minutes=25)
 def job_getstats():
     for key in list(TEAMS):       
             teamLink = TEAMS.get(key)
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+            chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN') 
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--no-sandbox")
-            driver = webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options = chrome_options)
+            chrome_driver_devpath = "./chromedriver"
+            #chrome_prod_devpath = os.environ.get("CHROMEDRIVER_PATH")
+            driver = webdriver.Chrome(ChromeDriverManager().install())
             link = 'https://www.hltv.org/team/' + teamLink 
             driver.get(link)
             #team = driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div[1]/div/div[1]/div[1]')
@@ -315,11 +316,12 @@ def job_getmatches():
     import time
     import math
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    #chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options = chrome_options)
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    #driver = webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options = chrome_options)
     driver.get('https://csgolounge.com/')
     time.sleep(7)
     message = {}
@@ -363,6 +365,9 @@ def job_getmatches():
             matches_discarded.append([team1_str, team2_str])
     driver.close()
 
+# 1 function: create match between two random teams (id, date, team1 name, team2 name, *link*)
+# 2 function: call function 1 [3-5] times every 1 hour, add to database (upcoming matches), schedule remove function (in time after match)
+# 3 function: remove function (removes match from database)
 
 @cron.interval_schedule(minutes = 15)
 def job_updatedb():

@@ -8,7 +8,6 @@ function display_matches(teams) {
         request.onload = function() {
             matches_array = JSON.parse(this.response)
         }
-        request.send()
         teams = JSON.parse(teams)
         for (i = 0; i < matches_array.length; i++) {
             //check if team1 is one of the teams in the CONST team dictionary
