@@ -1,6 +1,7 @@
 from flask import Flask, Response, render_template, url_for, request, jsonify
 import time, math, random
 import json
+import random
 from datetime import datetime
 from datetime import date 
 from selenium import webdriver
@@ -107,10 +108,10 @@ TEAMS = {
     "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
   "Gen.G" : "10514/geng",
-#   'Winstrike': '9183/winstrike',
-#   'c0ntact': '10606/c0ntact',
+#  'Winstrike': '9183/winstrike',
+# 'c0ntact': '10606/c0ntact',
   'Heroic': '7175/heroic',
-#   'Secret': '10488/secret',
+   'Secret': '10488/secret',
   "Espada": '8669/espada',
   'Hard Legion': "10421/hard-legion",
   'Syman': '8772/syman',
@@ -368,8 +369,72 @@ def job_getmatches():
 def create_match()
     # use uuid to generate ids
     # date format: "13.09.2021, 10:00 CET"
-    return [id (int), match_date(string), team1_name(string), team2_name(string), match_link(string)]
-    return 1
+
+    # generates a random id
+    id = int(random.random() * 100000)
+
+    # gets current date, year, month, day, minute, 
+    now = datetime.datetime.now()
+
+    #initializes current current year, month, day, minute, and hour; uses -z suffix declaration for clarity
+    yearz = now.year
+    monthz = now.month
+    dayz = now.day
+    hrz = now.hour
+    minz = 0 if now.minute < 30 else 30
+
+    chosenTime = 30 * (int)(random.random() * 10)
+
+    minz += chosenTime
+
+    hrz += minz/60
+    minz %= 60
+
+    dayz += hrz/24
+    hrz %= 24
+
+    monthz += dayz/31
+    dayz %= 31
+
+    yearz += monthz/12
+    monthz %= 12
+
+    match_date = dayz + "." + monthz + "." + yearz + ", " + hrz + ":" + minz + "CET"
+
+    teamNum = (int)(random.random() * 10 + TEAMS.len())%TEAMS.len() - 1
+
+    teamNum2 = (int)(random.random() * 10 + TEAMS.len())%TEAMS.len() - 1
+
+    if (teamNum2 == teamNum and teamNum != 0):
+        teamNum -= 1
+    else if (teamNum2 == teamNum):
+        teamNum += 1
+
+    for team1 in thisdict:
+        if (teamNum == 0):
+            team1_name = team1
+            break
+        else:
+            teamNum -= 1
+
+    for team2 in thisdict:
+        if (teamNum2 == 0):
+            team2_name = team2
+            break
+        else:
+            teamNum2 -= 1
+
+
+
+    match_link = "https://csgolounge/" + id
+
+
+
+
+
+    return [id, match_date, team1_name, team2_name, match_link]
+
+
 # 1 function: create match between two random teams (id, date, team1 name, team2 name, *link*)
 # 2 function: call function 1 [3-5] times every 1 hour, add to database (upcoming matches), schedule remove function (in time after match)
 # 3 function: remove function (removes match from database)
