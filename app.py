@@ -365,6 +365,11 @@ def job_getmatches():
             matches_discarded.append([team1_str, team2_str])
     driver.close()
 
+def create_match()
+    # use uuid to generate ids
+    # date format: "13.09.2021, 10:00 CET"
+    return [id (int), match_date(string), team1_name(string), team2_name(string), match_link(string)]
+    return 1
 # 1 function: create match between two random teams (id, date, team1 name, team2 name, *link*)
 # 2 function: call function 1 [3-5] times every 1 hour, add to database (upcoming matches), schedule remove function (in time after match)
 # 3 function: remove function (removes match from database)
