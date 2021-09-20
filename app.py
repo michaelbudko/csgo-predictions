@@ -366,7 +366,8 @@ def job_getmatches():
             matches_discarded.append([team1_str, team2_str])
     driver.close()
 
-def create_match()
+@app.route('/api/creatematch')
+def create_match():
     # use uuid to generate ids
     # date format: "13.09.2021, 10:00 CET"
 
