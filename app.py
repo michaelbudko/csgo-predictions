@@ -384,56 +384,59 @@ def create_match():
     hrz = now.hour
     minz = 0 if now.minute < 30 else 30
 
-    chosenTime = 30 * (int)(random.random() * 10)
+    chosenTime = 30 * random.randrange(1,8)
 
     minz += chosenTime
 
-    hrz += minz/60
+    hrz += (int)(minz/60)
     minz %= 60
+    if (minz == 0):
+        minz = "00"
 
-    dayz += hrz/24
+    dayz += (int)(hrz/24)
     hrz %= 24
 
-    monthz += dayz/31
+    monthz += (int)(dayz/31)
     dayz %= 31
+    if (dayz < 10):
+        dayz = "0" + str(dayz)
+    
 
-    yearz += monthz/12
+    yearz += (int)(monthz/12)
     monthz %= 12
+    if (monthz < 10):
+        monthz = "0" + str(monthz)
 
     match_date = str(dayz) + "." + str(monthz) + "." + str(yearz) + ", " + str(hrz) + ":" + str(minz) + "CET"
 
-    teamNum = (int)(random.random() * 10 + TEAMS.len())%TEAMS.len() - 1
+    teamNum = random.randrange(0, len(TEAMS))
 
-    teamNum2 = (int)(random.random() * 10 + TEAMS.len())%TEAMS.len() - 1
+    teamNum2 = random.randrange(0, len(TEAMS))
 
     if (teamNum2 == teamNum and teamNum != 0):
         teamNum -= 1
-    else if (teamNum2 == teamNum):
+    elif (teamNum2 == teamNum):
         teamNum += 1
 
-    for team1 in thisdict:
+    team1_name = "Team1 Name"
+    team2_name = "Team2 Name"
+    for team1 in TEAMS:
         if (teamNum == 0):
             team1_name = team1
             break
         else:
             teamNum -= 1
 
-    for team2 in thisdict:
+    for team2 in TEAMS:
         if (teamNum2 == 0):
             team2_name = team2
             break
         else:
             teamNum2 -= 1
 
+    match_link = "https://csgolounge/" + str(id)
 
-
-    match_link = "https://csgolounge/" + id
-
-
-
-
-
-    return [id, match_date, team1_name, team2_name, match_link]
+    return jsonify([id, match_date, team1_name, team2_name, match_link])
 
 
 # 1 function: create match between two random teams (id, date, team1 name, team2 name, *link*)
@@ -486,9 +489,10 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
-    job_getstats()
-    job_getmatches()
-    job_updatedb()
+    #job_getstats()
+    #job_getmatches()
+    #job_updatedb()
+    return
 
 # Shutdown your cron thread if the web process is stopped
 atexit.register(lambda: cron.shutdown(wait=False))
