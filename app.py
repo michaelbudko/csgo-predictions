@@ -399,7 +399,7 @@ def create_match()
     yearz += monthz/12
     monthz %= 12
 
-    match_date = dayz + "." + monthz + "." + yearz + ", " + hrz + ":" + minz + "CET"
+    match_date = str(dayz) + "." + str(monthz) + "." + str(yearz) + ", " + str(hrz) + ":" + str(minz) + "CET"
 
     teamNum = (int)(random.random() * 10 + TEAMS.len())%TEAMS.len() - 1
 
