@@ -72,51 +72,64 @@ class UpcomingMatches(db.Model):
                 self.team2_name = team2_name
                 self.match_link = match_link
 
-matches_list = []
+matches_list = [
+    {
+        "team1_name": "NiP",
+        "team2_name": "FaZe",
+        "match_date": "01.23.2019 4:00 ETC",
+        "match_link": "test.com"
+    },
+    {
+        "team1_name": "BIG",
+        "team2_name": "OG",
+        "match_date": "11.23.2019 4:00 ETC",
+        "match_link": "test.com"
+    },
+]
 matches_discarded = []
 team_stats = {}
 import datetime
 date_started = datetime.datetime.now()
 TEAMS = {
 #   "Na'Vi": "4608/natus-vincere",
-  "Fnatic": "4991/fnatic",
+ # "Fnatic": "4991/fnatic",
 #   "Astralis": "6665/astralis",
 #   "mousesports" : "4494/mousesports", 
-  "G2" : "5995/g2",
-  "Liquid" : "5973/liquid",
-  "EG" : "10399/evil-geniuses",
+ # "G2" : "5995/g2",
+ # "Liquid" : "5973/liquid",
+ # "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
-  "100 Thieves" : "8474/100-thieves",
+ # "100 Thieves" : "8474/100-thieves",
   "NiP" : "4411/nip",
   "OG" : "10503/og",
   "BIG" : "7532/big",
-  "mibr" : "9215/mibr",
-   "Ence" : "4869/ence",
-  "Godsent" : "6902/godsent",
+ # "mibr" : "9215/mibr",
+  # "Ence" : "4869/ence",
+  #"Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
-    "Cloud9" : "5752/cloud9",
-    "Sprout" : "8637/sprout",
-    "Vitality" : "9565/vitality",
+  #  "Cloud9" : "5752/cloud9",
+  #  "Sprout" : "8637/sprout",
+  #  "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
-    "Heretics" : "8346/heretics",
+   # "Heretics" : "8346/heretics",
     # "coL" : "5005/complexity",
-    "forZe" : "8135/forze",
-    "FURIA" : "8297/furia",
-    "Spirit" : "7020/spirit",
-  "North" : "7533/north",
+  #  "forZe" : "8135/forze",
+  #  "FURIA" : "8297/furia",
+  #  "Spirit" : "7020/spirit",
+  #"North" : "7533/north",
 #   "HAVU" : 7865/havu",
-    "VP" : "5378/virtuspro",
+  #  "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
-  "Gen.G" : "10514/geng",
+ #"Gen.G" : "10514/geng",
 #  'Winstrike': '9183/winstrike',
 # 'c0ntact': '10606/c0ntact',
-  'Heroic': '7175/heroic',
-   'Secret': '10488/secret',
-  "Espada": '8669/espada',
-  'Hard Legion': "10421/hard-legion",
-  'Syman': '8772/syman',
-  "ALTERNATE aTTaX": '4501/alternate-attax',
-  "SG.pro": '10105/sgpro'
+ # 'Heroic': '7175/heroic',
+  # 'Secret': '10488/secret',
+ # "Espada": '8669/espada',
+ # 'Hard Legion': "10421/hard-legion",
+ # 'Syman': '8772/syman',
+ # "ALTERNATE aTTaX": '4501/alternate-attax',
+ # "SG.pro": '10105/sgpro'
 }
 
 
@@ -272,7 +285,8 @@ def job_getstats():
 
 @app.route('/')
 def home():
-    return render_template('home.html', teams = TEAMS)
+    print(matches_list)
+    return render_template('home.html', teams = TEAMS, matches_array = matches_list)
 
 @app.route("/past")
 def past():
@@ -291,6 +305,13 @@ def discarded():
     return str(matches_discarded)
 
 @app.route('/api/upcoming_matches', methods=["GET"])
+def upcoming_matches():
+    if (request.method == 'GET'):
+        global matches_list
+        upcoming_matches = matches_list
+        return(jsonify(upcoming_matches))
+"""
+@app.route('/api/upcoming_matches', methods=["GET"])
 def matches_list():
     if (request.method == 'GET'):
         result_set = db.session.execute("SELECT * FROM upcoming_matches")  
@@ -302,6 +323,7 @@ def matches_list():
                 d = {**d, **{column: value}}
             upcoming_matches.append(d)
         return(jsonify(upcoming_matches))
+"""
 
 @app.route('/api/teamstats')
 def teamstats():
@@ -438,10 +460,16 @@ def create_match():
 
     return jsonify([id, match_date, team1_name, team2_name, match_link])
 
+def add_matches():
+    # call create match 3-5 times
+    # check if match is duplicate (exists in matches_list)
+    # if not add to match_list
+    # schedule remove match call at match_time + 60 mins
 
-# 1 function: create match between two random teams (id, date, team1 name, team2 name, *link*)
-# 2 function: call function 1 [3-5] times every 1 hour, add to database (upcoming matches), schedule remove function (in time after match)
-# 3 function: remove function (removes match from database)
+
+def remove_match(match_id):
+    # loop matches_list, remove match with match_id
+    # this function needs to be scheduled an hour after a game starts
 
 @cron.interval_schedule(minutes = 15)
 def job_updatedb():
@@ -489,7 +517,7 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
-    #job_getstats()
+    job_getstats()
     #job_getmatches()
     #job_updatedb()
     return

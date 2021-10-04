@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title> CS:GO Predict</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script type="text/javascript" src = "{{ url_for('static', filename='matches_display.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='matches_display.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <h2 style="text-align:center; font-family: 'Montserrat', sans-serif;">CS:GO Matches Prediction</h2> 
-    <div class = miniHeader>
-        <a id = 'currentLink' href="/">Future</a>
+    <h2 style="text-align:center; font-family: 'Montserrat', sans-serif;">CS:GO Matches Prediction</h2>
+    <div class=miniHeader>
+        <a id='currentLink' href="/">Future</a>
         <a href="/past">Past</a>
     </div>
-     <div id="MatchesDiv"></div>
+    <div id="MatchesDiv">
+    </div>
     <script type="text/javascript">
-        display_matches('{{teams|tojson}}')
-     </script>
+        display_matches('{{teams|tojson}}', '{{matches_array|tojson}}')
+    </script>
 </body>
+
 </html>
