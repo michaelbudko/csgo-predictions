@@ -222,6 +222,19 @@ def predict():
         }
         return jsonify(message)
 
+@app.route("/api/addToPredicted")
+def addToPredicted():
+    try:
+        match_id = 1234
+        if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+            prediction = MatchPredictions(match_id, "9.9.2020 5:00 CTE", "NaVi Jr", "VP", "link", 1, 60.0 ,40.0, 1, 2.3, 1.3)
+            db.session.add(prediction)
+            db.session.commit()
+            return "success"
+        return "match exists"
+    except Exception as e:
+        return e
+
 @cron.interval_schedule(minutes=25)
 def job_getstats():
     for key in list(TEAMS):       
@@ -461,13 +474,16 @@ def create_match():
     return jsonify([id, match_date, team1_name, team2_name, match_link])
 
 def add_matches():
+    return -1
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
     # if not add to match_list
     # schedule remove match call at match_time + 60 mins
+    # after match removed, decide who wins, add coef and add to predicted matches
 
 
 def remove_match(match_id):
+    return -1
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
 
