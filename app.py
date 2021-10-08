@@ -474,7 +474,19 @@ def create_match():
     return jsonify([id, match_date, team1_name, team2_name, match_link])
 
 def add_matches():
-    return -1
+    x = random.randrange(3, 6)
+    for count in range(x):
+        new_match = create_match()
+        for dict_match in matches_list:
+            if ((dict_match["team1_name"] == new_match["team1_name"] and dict_match["team2_name"] == new_match["team2_name"]) or (dict_match["team2_name"] == new_match["team1_name"] and dict_match["team1_name"] == new_match["team2_name"])):
+                new_match = None
+                break
+        if new_match == None:
+            count -= 1
+        else: 
+            matches_list.append(new_match)
+            remove_match(new_match.id)
+    return
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
     # if not add to match_list
@@ -483,7 +495,13 @@ def add_matches():
 
 
 def remove_match(match_id):
-    return -1
+    match_to_remove = None
+    for dict_match in matches_list:
+        if dict_match["id"] == match_id:
+            match_to_remove = dict_match
+            break
+    match_list.remove(match_to_remove)
+    return
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
 
