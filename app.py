@@ -9,6 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import pickle
 from bs4 import BeautifulSoup
 import numpy as np
+import schedule
 from apscheduler.scheduler import Scheduler
 import atexit
 import requests
@@ -485,7 +486,16 @@ def add_matches():
             count -= 1
         else: 
             matches_list.append(new_match)
-            remove_match(new_match.id)
+            hourz = int(new_match.match_date[-8, -6])
+            minz = new_match.match_date[-5, -3]
+            hourz += 1
+            if (hourz == 24):
+                hourz == "00"
+            hourz = str(hourz)
+
+            timez = hourz + ":" + "minz"
+
+            schedule.at(timez).do(remove_match, new_match.id)
     return
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
@@ -501,7 +511,18 @@ def remove_match(match_id):
             match_to_remove = dict_match
             break
     match_list.remove(match_to_remove)
-    return
+    try:
+        if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+            winner = random.randrange(1,3)
+            co1 = "{:.2f}".format(random.random() * 2)
+            co2 = "{:.2f}".format(3.2 - co1)
+            prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, 60.0, 40.0, winner, co1, co2)
+            db.session.add(prediction)
+            db.session.commit()
+            return "success"
+        return "match exists"
+    except Exception as e:
+        return e
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
 
