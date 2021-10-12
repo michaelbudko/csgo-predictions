@@ -75,12 +75,14 @@ class UpcomingMatches(db.Model):
 
 matches_list = [
     {
+        "id": 1,
         "team1_name": "NiP",
         "team2_name": "FaZe",
         "match_date": "01.23.2019 4:00 ETC",
         "match_link": "test.com"
     },
     {
+        "id": 2,
         "team1_name": "BIG",
         "team2_name": "OG",
         "match_date": "11.23.2019 4:00 ETC",
@@ -472,9 +474,18 @@ def create_match():
 
     match_link = "https://csgolounge/" + str(id)
 
-    return jsonify([id, match_date, team1_name, team2_name, match_link])
+    return {
+        "id": id,
+        "match_date": match_date, 
+        "team1_name": team1_name, 
+        "team2_name": team2_name,
+        "match_link": match_link
+        }
 
+
+@cron.interval_schedule(minutes = 30)
 def add_matches():
+    print("CALLED FUNCTION")
     x = random.randrange(3, 6)
     for count in range(x):
         new_match = create_match()
@@ -511,8 +522,15 @@ def remove_match(match_id):
             match_to_remove = dict_match
             break
     match_list.remove(match_to_remove)
+    link = "https://csgopredict.herokuapp.com/api/predict"
+    if (ENV == 'dev'):
+        link = "http://127.0.0.1:5000/"
     try:
         if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
+            response = requests.get(link + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+            response = response.json()
+            # TODO: get probability, team1_win from response
+            # TODO: randomize who won
             winner = random.randrange(1,3)
             co1 = "{:.2f}".format(random.random() * 2)
             co2 = "{:.2f}".format(3.2 - co1)
@@ -573,6 +591,7 @@ def job_updatedb():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
+    add_matches()
     #job_getmatches()
     #job_updatedb()
     return
