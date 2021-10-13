@@ -9,9 +9,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 import pickle
 from bs4 import BeautifulSoup
 import numpy as np
-import schedule
 from apscheduler.scheduler import Scheduler
 import atexit
+import schedule
 import requests
 import hashlib
 from flask_script import Manager, Server
@@ -96,9 +96,9 @@ date_started = datetime.datetime.now()
 TEAMS = {
 #   "Na'Vi": "4608/natus-vincere",
  # "Fnatic": "4991/fnatic",
-#   "Astralis": "6665/astralis",
+  #"Astralis": "6665/astralis",
 #   "mousesports" : "4494/mousesports", 
- # "G2" : "5995/g2",
+  "G2" : "5995/g2",
  # "Liquid" : "5973/liquid",
  # "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
@@ -107,7 +107,7 @@ TEAMS = {
   "OG" : "10503/og",
   "BIG" : "7532/big",
  # "mibr" : "9215/mibr",
-  # "Ence" : "4869/ence",
+ #  "Ence" : "4869/ence",
   #"Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
   #  "Cloud9" : "5752/cloud9",
@@ -497,16 +497,18 @@ def add_matches():
             count -= 1
         else: 
             matches_list.append(new_match)
-            hourz = int(new_match.match_date[-8, -6])
-            minz = new_match.match_date[-5, -3]
+            y = new_match["match_date"]
+            print(y)
+            hourz = y[12:14]
+            hourz = int(hourz)
             hourz += 1
             if (hourz == 24):
-                hourz == "00"
+               hourz == "00"
             hourz = str(hourz)
 
-            timez = hourz + ":" + "minz"
+            timez = hourz + ":" + "00"
 
-            schedule.at(timez).do(remove_match, new_match.id)
+            schedule.at(timez).do(remove_match(new_match["id"])
     return
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
@@ -521,7 +523,7 @@ def remove_match(match_id):
         if dict_match["id"] == match_id:
             match_to_remove = dict_match
             break
-    match_list.remove(match_to_remove)
+    matches_list.remove(match_to_remove)
     link = "https://csgopredict.herokuapp.com/api/predict"
     if (ENV == 'dev'):
         link = "http://127.0.0.1:5000/"
@@ -529,12 +531,17 @@ def remove_match(match_id):
         if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
             response = requests.get(link + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
             response = response.json()
-            # TODO: get probability, team1_win from response
-            # TODO: randomize who won
             winner = random.randrange(1,3)
+            x = random.random()
+            if x > 0.75:
+                x = winner
+            else:
+                x = 2 - winner
+            if x == 0:
+                x = 1
             co1 = "{:.2f}".format(random.random() * 2)
             co2 = "{:.2f}".format(3.2 - co1)
-            prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, 60.0, 40.0, winner, co1, co2)
+            prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
             db.session.add(prediction)
             db.session.commit()
             return "success"
