@@ -19,7 +19,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-ENV = 'dev'
+ENV = 'prod'
 if ENV == 'dev':
     app.debug = True 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Qwertyu7@localhost:5430/match_predictions_db'
@@ -78,14 +78,14 @@ matches_list = [
         "id": 1,
         "team1_name": "NiP",
         "team2_name": "FaZe",
-        "match_date": "01.23.2019 4:00 ETC",
+        "match_date": "01.23.2019, 04:00 ETC",
         "match_link": "test.com"
     },
     {
         "id": 2,
         "team1_name": "BIG",
         "team2_name": "OG",
-        "match_date": "11.23.2019 4:00 ETC",
+        "match_date": "11.23.2019, 04:00 ETC",
         "match_link": "test.com"
     },
 ]
@@ -306,7 +306,11 @@ def home():
 
 @app.route("/past")
 def past():
-    result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    result_set = None
+    try:
+        result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    except Exception as e:
+        return str(e)
     d, past_matches = {}, []
     for rowproxy in result_set:
         # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
@@ -507,11 +511,13 @@ def add_matches():
 
 @cron.interval_schedule(minutes = 1)
 def remove_helper():
+    print("remove helper called")
     matches_to_remove = []
     matches_list_copy = matches_list
     for dict_match in matches_list_copy:
         date = dict_match["match_date"]
-        hourz = int((date[12:14]) + 1)%24 * 60
+        print(date)
+        hourz = (int(date[12:14]) + 1)%24 * 60
         minz = int(date[15:17])
 
         time = hourz + minz
@@ -523,8 +529,8 @@ def remove_helper():
 
         time_now = m + h
             
-        if (time_now >= time and time_now - 60 <= time):
-            remove_match(dict_match["id"])
+        #if (time_now >= time and time_now - 60 <= time):
+        remove_match(dict_match["id"])
     # 1: in add_matches, add each match (match_id, time_when_to_remove) to matches_to_remove array [][]
     # 2: remove_helper runs every minute -> iterates over matches_to_remove, if time_when_to_remove <= current_time,
     #    remove_helper() calls remove_match(match_id)
@@ -537,6 +543,7 @@ def remove_match(match_id):
             match_to_remove = dict_match
             break
     if (match_to_remove != None):
+        print("march removed: ", match_to_remove)
         matches_list.remove(match_to_remove)
         link = "https://csgopredict.herokuapp.com/api/predict"
         if (ENV == 'dev'):
