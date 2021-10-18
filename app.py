@@ -571,6 +571,7 @@ def remove_match(match_id):
             print("match exists")
             return "match exists"
         except Exception as e:
+            print(str(e))
             return str(e)
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
