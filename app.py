@@ -566,14 +566,16 @@ def remove_match(match_id):
                 prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
+                print("sucess")
                 return "success"
+            print("match exists")
             return "match exists"
         except Exception as e:
-            return e
+            return str(e)
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
 
-@cron.interval_schedule(minutes = 15)
+#@cron.interval_schedule(minutes = 15)
 def job_updatedb():
     result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
     d, past_matches = {}, []
