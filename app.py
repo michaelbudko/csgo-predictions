@@ -551,7 +551,7 @@ def remove_match(match_id):
             link = "http://127.0.0.1:5000/"
         try:
             if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                response = requests.get(link + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                response = requests.get(link + '?team1=' + dict_match["team1_name"].strip() + '&team2=' + dict_match["team2_name"].strip())
                 response = response.json()
                 winner = random.randrange(1,3)
                 x = random.random()
