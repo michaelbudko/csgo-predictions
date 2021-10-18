@@ -510,7 +510,7 @@ def add_matches():
     # schedule remove match call at match_time + 60 mins
     # after match removed, decide who wins, add coef and add to predicted matches
 
-@cron.interval_schedule(minutes = 1)
+@cron.interval_schedule(minutes = 5)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
