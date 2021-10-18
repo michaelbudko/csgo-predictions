@@ -510,7 +510,7 @@ def add_matches():
     # schedule remove match call at match_time + 60 mins
     # after match removed, decide who wins, add coef and add to predicted matches
 
-@cron.interval_schedule(minutes = 5)
+@cron.interval_schedule(minutes = 1)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
@@ -545,7 +545,6 @@ def remove_match(match_id):
             break
     if (match_to_remove != None):
         print("march removed: ", match_to_remove)
-        matches_list.remove(match_to_remove)
         link = "https://csgopredict.herokuapp.com/api/predict"
         if (ENV == 'dev'):
             link = "http://127.0.0.1:5000/"
@@ -566,6 +565,7 @@ def remove_match(match_id):
                 prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
+                matches_list.remove(match_to_remove)
                 print("sucess")
                 return "success"
             print("match exists")
