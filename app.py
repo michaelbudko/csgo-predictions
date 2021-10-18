@@ -437,7 +437,7 @@ def create_match():
     dayz += (int)(hrz/24)
     hrz %= 24
     if (hrz < 10):
-        hrzz = "0" + str(hrz)
+        hrz = "0" + str(hrz)
 
     monthz += (int)(dayz/31)
     dayz %= 31
