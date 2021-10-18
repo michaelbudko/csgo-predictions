@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 import numpy as np
 from apscheduler.scheduler import Scheduler
 import atexit
-import schedule
 import requests
 import hashlib
 from flask_script import Manager, Server
