@@ -560,8 +560,8 @@ def remove_match(match_id):
                     x = 2 - winner
                 if x == 0:
                     x = 1
-                co1 = "{:.2f}".format(random.random() * 2)
-                co2 = "{:.2f}".format(3.2 - co1)
+                co1 = float("{:.2f}".format(random.random() * 2))
+                co2 = float("{:.2f}".format(3.2 - co1))
                 prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
