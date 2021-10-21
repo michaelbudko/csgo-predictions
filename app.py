@@ -325,21 +325,24 @@ def past():
 def cmp_matches(a, b):
     a = a["match_date"]
     b = b["match_date"]
-    idx_a = a.index(",")
-    idx_b = b.index(",")
-    if int(a[idx_a-4:idx_a]) > int(b[idx_b-4:idx_b]):
-        return 1
-    elif int(a[idx_a-4:idx_a]) == int(b[idx_b-4:idx_b]):
-        idx_a = idx_a - 5
-        idx_b = idx_b - 5
-        if int(a[idx_a-2:idx_a])> int(b[idx_b-2:idx_b]):
-            return 1
-        elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]):
-            return 1
-            #TODO: compare days
-        else:
+    try:
+        idx_a = a.index(",")
+        idx_b = b.index(",")
+        if int(a[idx_a-4:idx_a]) > int(b[idx_b-4:idx_b]):
             return -1
-    else:
+        elif int(a[idx_a-4:idx_a]) == int(b[idx_b-4:idx_b]):
+            idx_a = idx_a - 5
+            idx_b = idx_b - 5
+            if int(a[idx_a-2:idx_a])> int(b[idx_b-2:idx_b]):
+                return -1
+            elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]):
+                return -1
+                #TODO: compare days
+            else:
+                return 1
+        else:
+            return 1
+    except:
         return -1
 
 @app.route('/discarded')
