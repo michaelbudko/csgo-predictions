@@ -530,8 +530,8 @@ def remove_helper():
 
         time_now = m + h
             
-        #if (time_now >= time and time_now - 60 <= time):
-        remove_match(dict_match["id"])
+        if (time_now >= time and time_now - 60 <= time):
+            remove_match(dict_match["id"])
     # 1: in add_matches, add each match (match_id, time_when_to_remove) to matches_to_remove array [][]
     # 2: remove_helper runs every minute -> iterates over matches_to_remove, if time_when_to_remove <= current_time,
     #    remove_helper() calls remove_match(match_id)
