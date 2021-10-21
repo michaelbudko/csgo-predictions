@@ -319,7 +319,7 @@ def past():
             d = {**d, **{column: value}}
         past_matches.append(d)
     cmp_matches_py3 = cmp_to_key(cmp_matches)
-    past_matches.sort(cmp_matches_py3)
+    past_matches.sort(key=cmp_matches_py3)
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
 
 def cmp_matches(a, b):
