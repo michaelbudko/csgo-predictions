@@ -74,20 +74,7 @@ class UpcomingMatches(db.Model):
                 self.match_link = match_link
 
 matches_list = [
-    {
-        "id": 1,
-        "team1_name": "NiP",
-        "team2_name": "FaZe",
-        "match_date": "01.23.2019, 04:00 ETC",
-        "match_link": "test.com"
-    },
-    {
-        "id": 2,
-        "team1_name": "BIG",
-        "team2_name": "OG",
-        "match_date": "11.23.2019, 04:00 ETC",
-        "match_link": "test.com"
-    },
+
 ]
 matches_discarded = []
 team_stats = {}
