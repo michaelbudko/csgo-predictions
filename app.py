@@ -323,6 +323,8 @@ def past():
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
 
 def cmp_matches(a, b):
+    a = a["match_date"]
+    b = b["match_date"]
     idx_a = a.index(",")
     idx_b = b.index(",")
     if int(a[idx_a-4:idx_a]) > int(b[idx_b-4:idx_b]):
