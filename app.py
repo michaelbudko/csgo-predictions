@@ -78,14 +78,14 @@ matches_list = [
         "id": 1,
         "team1_name": "NiP",
         "team2_name": "FaZe",
-        "match_date": "01.23.2019 4:00 ETC",
+        "match_date": "01.23.2019, 04:00 ETC",
         "match_link": "test.com"
     },
     {
         "id": 2,
         "team1_name": "BIG",
         "team2_name": "OG",
-        "match_date": "11.23.2019 4:00 ETC",
+        "match_date": "11.23.2019, 04:00 ETC",
         "match_link": "test.com"
     },
 ]
@@ -511,7 +511,7 @@ def remove_helper():
     matches_list_copy = matches_list
     for dict_match in matches_list_copy:
         date = dict_match["match_date"]
-        hourz = int((date[12:14]) + 1)%24 * 60
+        hourz = ((int(date[12:14]) + 1)%24 * 60)
         minz = int(date[15:17])
 
         time = hourz + minz
