@@ -16,6 +16,7 @@ import hashlib
 from flask_script import Manager, Server
 from flask_sqlalchemy import SQLAlchemy
 import os
+from functools import cmp_to_key
 
 app = Flask(__name__)
 ENV = 'prod'
@@ -317,7 +318,27 @@ def past():
             # build up the dictionary
             d = {**d, **{column: value}}
         past_matches.append(d)
+    cmp_matches_py3 = cmp_to_key(cmp_matches)
+    past_matches.sort(cmp_matches_py3)
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
+
+def cmp_matches(a, b):
+    idx_a = a.index(",")
+    idx_b = b.index(",")
+    if (int)a[idx_a-4:idx_a] > (int)b[idx_b-4:idx_b]:
+        return 1
+    elif (int)a[idx_a-4:idx_a] == (int)b[idx_b-4:idx_b]:
+        idx_a = idx_a - 5
+        idx_b = idx_b - 5
+        if (int)a[idx_a-2:idx_a] > (int)b[idx_b-2:idx_b]:
+            return 1
+        elif (int)a[idx_a-2:idx_a] == (int)b[idx_b-2:idx_b]:
+            return 1
+            #TODO: compare days
+        else:
+            return -1
+    else:
+        return -1
 
 @app.route('/discarded')
 def discarded():
