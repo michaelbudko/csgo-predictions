@@ -79,32 +79,32 @@ matches_list = [
 
 matches = [
     {
-        team1_name = "G2",
-        team2_name = "FaZe",
-        match_id = 1,
-        match_link = "csgolounge.com",
-        match_date = "18.10.2021, 06:30CET"
+        "team1_name" = "G2",
+        "team2_name" = "FaZe",
+        "match_id" = 1,
+        "match_link" = "csgolounge.com",
+        "match_date" = "18.10.2021, 06:30CET"
     },
     {
-        team1_name = "NiP",
-        team2_name = "OG",
-        match_id = 1,
-        match_link = "csgolounge.com",
-        match_date = "18.10.2021, 06:30CET"
+        "team1_name" = "NiP",
+        "team2_name" = "OG",
+        "match_id" = 2,
+        "match_link" = "csgolounge.com",
+        "match_date" = "18.10.2021, 06:30CET"
     },
     {
-        team1_name = "BIG",
-        team2_name = "FaZe",
-        match_id = 1,
-        match_link = "csgolounge.com",
-        match_date = "18.10.2021, 06:30CET"
+        "team1_name" = "BIG",
+        "team2_name" = "FaZe",
+        "match_id" = 3,
+        "match_link" = "csgolounge.com",
+        "match_date" = "18.10.2021, 06:30CET"
     },
     {
-        team1_name = "G2",
-        team2_name = "OG",
-        match_id = 1,
-        match_link = "csgolounge.com",
-        match_date = "18.10.2021, 06:30CET"
+        "team1_name" = "G2",
+        "team2_name" = "OG",
+        "match_id" = 4,
+        "match_link" = "csgolounge.com",
+        "match_date" = "18.10.2021, 06:30CET"
     }
 ]
 matches_discarded = []
