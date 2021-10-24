@@ -76,6 +76,37 @@ class UpcomingMatches(db.Model):
 matches_list = [
 
 ]
+
+matches = [
+    {
+        team1_name = "G2",
+        team2_name = "FaZe",
+        match_id = 1,
+        match_link = "csgolounge.com",
+        match_date = "18.10.2021, 06:30CET"
+    },
+    {
+        team1_name = "NiP",
+        team2_name = "OG",
+        match_id = 1,
+        match_link = "csgolounge.com",
+        match_date = "18.10.2021, 06:30CET"
+    },
+    {
+        team1_name = "BIG",
+        team2_name = "FaZe",
+        match_id = 1,
+        match_link = "csgolounge.com",
+        match_date = "18.10.2021, 06:30CET"
+    },
+    {
+        team1_name = "G2",
+        team2_name = "OG",
+        match_id = 1,
+        match_link = "csgolounge.com",
+        match_date = "18.10.2021, 06:30CET"
+    }
+]
 matches_discarded = []
 team_stats = {}
 import datetime
@@ -289,7 +320,7 @@ def job_getstats():
 @app.route('/')
 def home():
     print(matches_list)
-    return render_template('home.html', teams = TEAMS, matches_array = matches_list)
+    return render_template('home.html', teams = TEAMS, matches_array = matches)
 
 @app.route("/past")
 def past():
@@ -515,7 +546,6 @@ def add_matches():
             count -= 1
         else: 
             matches_list.append(new_match)
-
     return
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
@@ -524,6 +554,15 @@ def add_matches():
     # after match removed, decide who wins, add coef and add to predicted matches
 
 @cron.interval_schedule(minutes = 1)
+def update_match_time():
+    for dict_match in matches:
+        match = create_match()
+        date_new = match["match_date"]
+        dict_match["date_old"] = date_new
+        hourz = (int(date[12:14]) + 1)%24 * 60
+    return
+
+@cron.interval_schedule(minutes = 60)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
@@ -545,9 +584,6 @@ def remove_helper():
             
         if (time_now >= time and time_now - 60 <= time):
             remove_match(dict_match["id"])
-    # 1: in add_matches, add each match (match_id, time_when_to_remove) to matches_to_remove array [][]
-    # 2: remove_helper runs every minute -> iterates over matches_to_remove, if time_when_to_remove <= current_time,
-    #    remove_helper() calls remove_match(match_id)
 
 
 def remove_match(match_id):
@@ -636,6 +672,7 @@ def job_updatedb():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
+    update_match_time()
     add_matches()
     #job_getmatches()
     #job_updatedb()xx
