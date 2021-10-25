@@ -522,17 +522,19 @@ def create_match():
             teamNum2 -= 1
 
     match_link = "https://csgolounge/" + str(id)
+    team1_odds = random.randrange(30,51)
 
     return {
         "id": id,
         "match_date": match_date, 
-        "team1_name": team1_name, 
+        "team1_name": team1_name,
         "team2_name": team2_name,
-        "match_link": match_link
+        "match_link": match_link,
+        "team1_odds": team1_odds
         }
 
 
-@cron.interval_schedule(minutes = 30)
+@cron.interval_schedule(minutes = 300)
 def add_matches():
     print("CALLED FUNCTION")
     x = random.randrange(3, 6)
