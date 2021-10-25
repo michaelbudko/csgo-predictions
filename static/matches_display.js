@@ -52,6 +52,7 @@ function display_matches(teams, matches_array) {
         button.setAttribute("class", "predictButton")
         button.setAttribute("data-team1", team1_name.textContent)
         button.setAttribute("data-team2", team2_name.textContent)
+        button.setAttribute("data-team1_odds", matches_array[i].team1_odds)
         button.setAttribute("data-flag", '')
         matchID = 'matchPrediction_' + i
         button.setAttribute("data-predictionID", matchID)
@@ -74,13 +75,13 @@ function display_matches(teams, matches_array) {
                 team1_probability = document.createElement('p')
                 team1_probability.setAttribute("class", "team1_probability")
                 //team1_probability.textContent += ((Math.round(data["Probability_1"] * 1000)) / 10) + "%"
-                team1_probability.textContent += matches_array[i].team1_odds
+                team1_probability.textContent += this.dataset.team1_odds
                 team2_probability = document.createElement('p')
                 team1_probability.setAttribute("id", 'prediction1_for_' + MATCH_ID)
                 team2_probability.setAttribute("id", 'prediction2_for_' + MATCH_ID)
                 team2_probability.setAttribute("class", "team2_probability")
                 //team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
-                team1_probability.textContent += 100 - matches_array[i].team1_odds
+                team2_probability.textContent += 100 - this.dataset.team1_odds
                 matchPrediction = document.getElementById(MATCH_ID)
                 matchPrediction.appendChild(team1_probability)
                 matchPrediction.appendChild(team2_probability)
