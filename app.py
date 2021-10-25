@@ -559,7 +559,6 @@ def update_match_time():
         match = create_match()
         date_new = match["match_date"]
         dict_match["date_old"] = date_new
-        hourz = (int(date[12:14]) + 1)%24 * 60
     return
 
 @cron.interval_schedule(minutes = 60)
