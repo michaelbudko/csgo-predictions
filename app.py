@@ -11,15 +11,15 @@ from bs4 import BeautifulSoup
 import numpy as np
 from apscheduler.scheduler import Scheduler
 import atexit
-import schedule
 import requests
 import hashlib
 from flask_script import Manager, Server
 from flask_sqlalchemy import SQLAlchemy
 import os
+from functools import cmp_to_key
 
 app = Flask(__name__)
-ENV = 'dev'
+ENV = 'prod'
 if ENV == 'dev':
     app.debug = True 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Qwertyu7@localhost:5430/match_predictions_db'
@@ -306,7 +306,11 @@ def home():
 
 @app.route("/past")
 def past():
-    result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    result_set = None
+    try:
+        result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
+    except Exception as e:
+        return str(e)
     d, past_matches = {}, []
     for rowproxy in result_set:
         # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
@@ -314,7 +318,27 @@ def past():
             # build up the dictionary
             d = {**d, **{column: value}}
         past_matches.append(d)
+    cmp_matches_py3 = cmp_to_key(cmp_matches)
+    past_matches.sort(cmp_matches_py3)
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
+
+def cmp_matches(a, b):
+    idx_a = a.index(",")
+    idx_b = b.index(",")
+    if (int)a[idx_a-4:idx_a] > (int)b[idx_b-4:idx_b]:
+        return 1
+    elif (int)a[idx_a-4:idx_a] == (int)b[idx_b-4:idx_b]:
+        idx_a = idx_a - 5
+        idx_b = idx_b - 5
+        if (int)a[idx_a-2:idx_a] > (int)b[idx_b-2:idx_b]:
+            return 1
+        elif (int)a[idx_a-2:idx_a] == (int)b[idx_b-2:idx_b]:
+            return 1
+            #TODO: compare days
+        else:
+            return -1
+    else:
+        return -1
 
 @app.route('/discarded')
 def discarded():
@@ -433,6 +457,8 @@ def create_match():
 
     dayz += (int)(hrz/24)
     hrz %= 24
+    if (hrz < 10):
+        hrz = "0" + str(hrz)
 
     monthz += (int)(dayz/31)
     dayz %= 31
@@ -507,11 +533,13 @@ def add_matches():
 
 @cron.interval_schedule(minutes = 1)
 def remove_helper():
+    print("remove helper called")
     matches_to_remove = []
     matches_list_copy = matches_list
     for dict_match in matches_list_copy:
         date = dict_match["match_date"]
-        hourz = ((int(date[12:14]) + 1)%24 * 60)
+        print(date)
+        hourz = (int(date[12:14]) + 1)%24 * 60
         minz = int(date[15:17])
 
         time = hourz + minz
@@ -537,13 +565,13 @@ def remove_match(match_id):
             match_to_remove = dict_match
             break
     if (match_to_remove != None):
-        matches_list.remove(match_to_remove)
+        print("march removed: ", match_to_remove)
         link = "https://csgopredict.herokuapp.com/api/predict"
         if (ENV == 'dev'):
             link = "http://127.0.0.1:5000/"
         try:
             if db.session.query(MatchPredictions).filter(MatchPredictions.match_id == match_id).count() == 0:
-                response = requests.get(link + '?team1=' + team1_str.strip() + '&team2=' + team2_str.strip())
+                response = requests.get(link + '?team1=' + dict_match["team1_name"].strip() + '&team2=' + dict_match["team2_name"].strip())
                 response = response.json()
                 winner = random.randrange(1,3)
                 x = random.random()
@@ -553,19 +581,23 @@ def remove_match(match_id):
                     x = 2 - winner
                 if x == 0:
                     x = 1
-                co1 = "{:.2f}".format(random.random() * 2)
-                co2 = "{:.2f}".format(3.2 - co1)
-                prediction = MatchPredictions(match_id, match_to_remove.match_date, match_to_remove.team1, match_to_remove.team2, match_to_remove.match_link, winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
+                co1 = float("{:.2f}".format(random.random() * 2))
+                co2 = float("{:.2f}".format(3.2 - co1))
+                prediction = MatchPredictions(match_id, match_to_remove["match_date"], match_to_remove["team1_name"], match_to_remove["team2_name"], match_to_remove["match_link"], winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
+                matches_list.remove(match_to_remove)
+                print("sucess")
                 return "success"
+            print("match exists")
             return "match exists"
         except Exception as e:
-            return e
+            print(str(e))
+            return str(e)
     # loop matches_list, remove match with match_id
     # this function needs to be scheduled an hour after a game starts
 
-@cron.interval_schedule(minutes = 15)
+#@cron.interval_schedule(minutes = 15)
 def job_updatedb():
     result_set = db.session.execute("SELECT * FROM match_predictions ORDER BY match_date DESC")  
     d, past_matches = {}, []
