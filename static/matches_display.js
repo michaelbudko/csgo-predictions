@@ -101,7 +101,7 @@ function display_matches(teams, matches_array) {
                 team2_probability.setAttribute("id", 'prediction2_for_' + MATCH_ID)
                 team2_probability.setAttribute("class", "team2_probability")
                 //team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
-                team2_probability.textContent += (100 - this.dataset.team1_odds) + '%'
+                team2_probability.textContent += (100.00 - this.dataset.team1_odds).toFixed(1)+ '%'
                 matchPrediction = document.getElementById(MATCH_ID)
                 matchPrediction.appendChild(team1_probability)
                 matchPrediction.appendChild(team2_probability)

@@ -136,7 +136,7 @@ TEAMS = {
     "Sprout" : "8637/sprout",
     "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
-   # "Heretics" : "8346/heretics",
+    #"Heretics" : "8346/heretics",
     "coL" : "5005/complexity",
     "forZe" : "8135/forze",
     "FURIA" : "8297/furia",
@@ -144,11 +144,11 @@ TEAMS = {
   #"North" : "7533/north",
 #   "HAVU" : 7865/havu",
     "VP" : "5378/virtuspro",
-     "MAD Lions" : "8362/mad-lions"
+    # "MAD Lions" : "8362/mad-lions"
  #"Gen.G" : "10514/geng",
 #  'Winstrike': '9183/winstrike',
 # 'c0ntact': '10606/c0ntact',
- # 'Heroic' : '7175/heroic',
+  "Heroic" : '7175/heroic',
   # 'Secret': '10488/secret',
  # "Espada": '8669/espada',
  # 'Hard Legion': "10421/hard-legion",
@@ -567,7 +567,7 @@ def add_matches():
     # schedule remove match call at match_time + 60 mins
     # after match removed, decide who wins, add coef and add to predicted matches
 
-@cron.interval_schedule(minutes = 1)
+@cron.interval_schedule(minutes = 90)
 def update_match_time():
     # "team1_name": team1_name,
     # "team2_name": team2_name,
@@ -579,6 +579,7 @@ def update_match_time():
         dict_match["match_date"] = date_new
         dict_match["team1_name"] = match["team1_name"]
         dict_match["team2_name"] = match["team2_name"]
+        dict_match["team1_odds"] = float("{:.1f}".format(random.random() + random.randrange(30, 75)))
     return
 
 @cron.interval_schedule(minutes = 60)
@@ -628,8 +629,8 @@ def remove_match(match_id):
                     x = 2 - winner
                 if x == 0:
                     x = 1
-                co1 = float("{:.2f}".format(random.random() * 2))
-                co2 = float("{:.2f}".format(3.2 - co1))
+                co1 = float("{:.2f}".format(random.random() + 1))
+                co2 = float("{:.2f}".format(4 - co1))
                 prediction = MatchPredictions(match_id, match_to_remove["match_date"], match_to_remove["team1_name"], match_to_remove["team2_name"], match_to_remove["match_link"], winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
@@ -690,8 +691,8 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
+    update_match_time()
     #job_getstats()
-    #update_match_time()
     #add_matches()
     #job_getmatches()
     #job_updatedb()
