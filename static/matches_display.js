@@ -52,6 +52,7 @@ function display_matches(teams, matches_array) {
         button.setAttribute("class", "predictButton")
         button.setAttribute("data-team1", team1_name.textContent)
         button.setAttribute("data-team2", team2_name.textContent)
+        button.setAttribute("data-team1_odds", matches_array[i].team1_odds)
         button.setAttribute("data-flag", '')
         matchID = 'matchPrediction_' + i
         button.setAttribute("data-predictionID", matchID)
@@ -66,26 +67,29 @@ function display_matches(teams, matches_array) {
                 var request = new XMLHttpRequest()
                 url = 'api/predict' + '?team1=' + team1_name_str + '&team2=' + team2_name_str;
                 // url = 'api/predict'
-                request.open('GET', url, true)
-                request.onload = function () {
-                    var data = JSON.parse(this.response)
-                    var team1_will_win = data["Team1_Predicted_Win"]
-                    team1_probability = document.createElement('p')
-                    team1_probability.setAttribute("class", "team1_probability")
-                    team1_probability.textContent += ((Math.round(data["Probability_1"] * 1000)) / 10) + "%"
-                    team2_probability = document.createElement('p')
-                    team1_probability.setAttribute("id", 'prediction1_for_' + MATCH_ID)
-                    team2_probability.setAttribute("id", 'prediction2_for_' + MATCH_ID)
-                    team2_probability.setAttribute("class", "team2_probability")
-                    team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
-                    matchPrediction = document.getElementById(MATCH_ID)
-                    matchPrediction.appendChild(team1_probability)
-                    matchPrediction.appendChild(team2_probability)
-                    // alert("Team to win: "  + data['Prediction_Teamname']);
-                    // var predictionDiv = document.createElement("div");
-                    // predictionDiv.setAttribute('class', 'predictionDiv')
-                }
-                request.send()
+                //request.open('GET', url, true)
+                //request.onload = function () {
+                //var data = JSON.parse(this.response)
+
+                //var team1_will_win = data["Team1_Predicted_Win"]
+                team1_probability = document.createElement('p')
+                team1_probability.setAttribute("class", "team1_probability")
+                //team1_probability.textContent += ((Math.round(data["Probability_1"] * 1000)) / 10) + "%"
+                team1_probability.textContent += this.dataset.team1_odds
+                team2_probability = document.createElement('p')
+                team1_probability.setAttribute("id", 'prediction1_for_' + MATCH_ID)
+                team2_probability.setAttribute("id", 'prediction2_for_' + MATCH_ID)
+                team2_probability.setAttribute("class", "team2_probability")
+                //team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
+                team2_probability.textContent += 100 - this.dataset.team1_odds
+                matchPrediction = document.getElementById(MATCH_ID)
+                matchPrediction.appendChild(team1_probability)
+                matchPrediction.appendChild(team2_probability)
+                // alert("Team to win: "  + data['Prediction_Teamname']);
+                // var predictionDiv = document.createElement("div");
+                // predictionDiv.setAttribute('class', 'predictionDiv')
+                //}
+                //request.send()
             } else {
                 MATCH_ID = this.dataset.predictionid;
                 matchPrediction = document.getElementById(MATCH_ID)

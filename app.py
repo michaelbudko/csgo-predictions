@@ -74,20 +74,42 @@ class UpcomingMatches(db.Model):
                 self.match_link = match_link
 
 matches_list = [
+
+]
+
+matches = [
     {
-        "id": 1,
-        "team1_name": "NiP",
+        "team1_name": "G2",
         "team2_name": "FaZe",
-        "match_date": "01.23.2019, 04:00 ETC",
-        "match_link": "test.com"
+        "match_id": 1,
+        "match_link": "csgolounge.com",
+        "match_date": "18.10.2021, 06:30CET",
+        "team1_odds": 43.2
     },
     {
-        "id": 2,
-        "team1_name": "BIG",
+        "team1_name": "NiP",
         "team2_name": "OG",
-        "match_date": "11.23.2019, 04:00 ETC",
-        "match_link": "test.com"
+        "match_id": 2,
+        "match_link" : "csgolounge.com",
+        "match_date" : "18.10.2021, 06:30CET",
+        "team1_odds": 67.2
     },
+    {
+        "team1_name" : "BIG",
+        "team2_name" : "FaZe",
+        "match_id" : 3,
+        "match_link" : "csgolounge.com",
+        "match_date" : "18.10.2021, 06:30CET",
+        "team1_odds": 54.1
+    },
+    {
+        "team1_name" : "G2",
+        "team2_name" : "OG",
+        "match_id" : 4,
+        "match_link" : "csgolounge.com",
+        "match_date" : "18.10.2021, 06:30CET",
+        "team1_odds": 39.9
+    }
 ]
 matches_discarded = []
 team_stats = {}
@@ -302,7 +324,7 @@ def job_getstats():
 @app.route('/')
 def home():
     print(matches_list)
-    return render_template('home.html', teams = TEAMS, matches_array = matches_list)
+    return render_template('home.html', teams = TEAMS, matches_array = matches)
 
 @app.route("/past")
 def past():
@@ -319,25 +341,30 @@ def past():
             d = {**d, **{column: value}}
         past_matches.append(d)
     cmp_matches_py3 = cmp_to_key(cmp_matches)
-    past_matches.sort(cmp_matches_py3)
+    past_matches.sort(key=cmp_matches_py3)
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
 
 def cmp_matches(a, b):
-    idx_a = a.index(",")
-    idx_b = b.index(",")
-    if (int)a[idx_a-4:idx_a] > (int)b[idx_b-4:idx_b]:
-        return 1
-    elif (int)a[idx_a-4:idx_a] == (int)b[idx_b-4:idx_b]:
-        idx_a = idx_a - 5
-        idx_b = idx_b - 5
-        if (int)a[idx_a-2:idx_a] > (int)b[idx_b-2:idx_b]:
-            return 1
-        elif (int)a[idx_a-2:idx_a] == (int)b[idx_b-2:idx_b]:
-            return 1
-            #TODO: compare days
-        else:
+    a = a["match_date"]
+    b = b["match_date"]
+    try:
+        idx_a = a.index(",")
+        idx_b = b.index(",")
+        if int(a[idx_a-4:idx_a]) > int(b[idx_b-4:idx_b]):
             return -1
-    else:
+        elif int(a[idx_a-4:idx_a]) == int(b[idx_b-4:idx_b]):
+            idx_a = idx_a - 5
+            idx_b = idx_b - 5
+            if int(a[idx_a-2:idx_a])> int(b[idx_b-2:idx_b]):
+                return -1
+            elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]):
+                return -1
+                #TODO: compare days
+            else:
+                return 1
+        else:
+            return 1
+    except:
         return -1
 
 @app.route('/discarded')
@@ -499,17 +526,19 @@ def create_match():
             teamNum2 -= 1
 
     match_link = "https://csgolounge/" + str(id)
+    team1_odds = random.randrange(30,51)
 
     return {
         "id": id,
         "match_date": match_date, 
-        "team1_name": team1_name, 
+        "team1_name": team1_name,
         "team2_name": team2_name,
-        "match_link": match_link
+        "match_link": match_link,
+        "team1_odds": team1_odds
         }
 
 
-@cron.interval_schedule(minutes = 30)
+@cron.interval_schedule(minutes = 300)
 def add_matches():
     print("CALLED FUNCTION")
     x = random.randrange(3, 6)
@@ -523,7 +552,6 @@ def add_matches():
             count -= 1
         else: 
             matches_list.append(new_match)
-
     return
     # call create match 3-5 times
     # check if match is duplicate (exists in matches_list)
@@ -532,6 +560,14 @@ def add_matches():
     # after match removed, decide who wins, add coef and add to predicted matches
 
 @cron.interval_schedule(minutes = 1)
+def update_match_time():
+    for dict_match in matches:
+        match = create_match()
+        date_new = match["match_date"]
+        dict_match["date_old"] = date_new
+    return
+
+@cron.interval_schedule(minutes = 60)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
@@ -553,9 +589,6 @@ def remove_helper():
             
         if (time_now >= time and time_now - 60 <= time):
             remove_match(dict_match["id"])
-    # 1: in add_matches, add each match (match_id, time_when_to_remove) to matches_to_remove array [][]
-    # 2: remove_helper runs every minute -> iterates over matches_to_remove, if time_when_to_remove <= current_time,
-    #    remove_helper() calls remove_match(match_id)
 
 
 def remove_match(match_id):
@@ -644,6 +677,7 @@ def job_updatedb():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     job_getstats()
+    update_match_time()
     add_matches()
     #job_getmatches()
     #job_updatedb()xx
