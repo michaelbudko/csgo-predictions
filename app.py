@@ -116,39 +116,39 @@ team_stats = {}
 import datetime
 date_started = datetime.datetime.now()
 TEAMS = {
-#   "Na'Vi": "4608/natus-vincere",
- # "Fnatic": "4991/fnatic",
+   "Na'Vi": "4608/natus-vincere",
+  "Fnatic": "4991/fnatic",
   #"Astralis": "6665/astralis",
-#   "mousesports" : "4494/mousesports", 
+ #  "mousesports" : "4494/mousesports", 
   "G2" : "5995/g2",
- # "Liquid" : "5973/liquid",
- # "EG" : "10399/evil-geniuses",
+  "Liquid" : "5973/liquid",
+  "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
  # "100 Thieves" : "8474/100-thieves",
   "NiP" : "4411/nip",
   "OG" : "10503/og",
   "BIG" : "7532/big",
  # "mibr" : "9215/mibr",
- #  "Ence" : "4869/ence",
-  #"Godsent" : "6902/godsent",
+   "Ence" : "4869/ence",
+  "Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
   #  "Cloud9" : "5752/cloud9",
-  #  "Sprout" : "8637/sprout",
-  #  "Vitality" : "9565/vitality",
+    "Sprout" : "8637/sprout",
+    "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
    # "Heretics" : "8346/heretics",
-    # "coL" : "5005/complexity",
-  #  "forZe" : "8135/forze",
-  #  "FURIA" : "8297/furia",
-  #  "Spirit" : "7020/spirit",
+    "coL" : "5005/complexity",
+    "forZe" : "8135/forze",
+    "FURIA" : "8297/furia",
+    "Spirit" : "7020/spirit",
   #"North" : "7533/north",
 #   "HAVU" : 7865/havu",
-  #  "VP" : "5378/virtuspro",
-    # "MAD Lions" : "8362/mad-lions"
+    "VP" : "5378/virtuspro",
+     "MAD Lions" : "8362/mad-lions"
  #"Gen.G" : "10514/geng",
 #  'Winstrike': '9183/winstrike',
 # 'c0ntact': '10606/c0ntact',
- # 'Heroic': '7175/heroic',
+ # 'Heroic' : '7175/heroic',
   # 'Secret': '10488/secret',
  # "Espada": '8669/espada',
  # 'Hard Legion': "10421/hard-legion",
@@ -345,6 +345,7 @@ def past():
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
 
 def cmp_matches(a, b):
+    #18.10.2021, 06:30CET
     a = a["match_date"]
     b = b["match_date"]
     try:
@@ -357,9 +358,16 @@ def cmp_matches(a, b):
             idx_b = idx_b - 5
             if int(a[idx_a-2:idx_a])> int(b[idx_b-2:idx_b]):
                 return -1
-            elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]):
-                return -1
-                #TODO: compare days
+            elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]): #if a>b then return -1
+                idx_a = idx_a - 3
+                idx_b = idx_b - 3
+                if int(a[idx_a-2:idx_a])> int(b[idx_b-2:idx_b]):
+                    return -1
+                elif int(a[idx_a-2:idx_a]) == int(b[idx_b-2:idx_b]):
+                    return 1
+                    #TODO MINUTE AND HOUR COMPARISON
+                else:
+                    return 1
             else:
                 return 1
         else:
@@ -561,10 +569,16 @@ def add_matches():
 
 @cron.interval_schedule(minutes = 1)
 def update_match_time():
+    # "team1_name": team1_name,
+    # "team2_name": team2_name,
+    # "match_link": match_link,
+    # "team1_odds": team1_odds
     for dict_match in matches:
         match = create_match()
         date_new = match["match_date"]
-        dict_match["date_old"] = date_new
+        dict_match["match_date"] = date_new
+        dict_match["team1_name"] = match["team1_name"]
+        dict_match["team2_name"] = match["team2_name"]
     return
 
 @cron.interval_schedule(minutes = 60)
@@ -676,11 +690,11 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
-    job_getstats()
-    update_match_time()
-    add_matches()
+    #job_getstats()
+    #update_match_time()
+    #add_matches()
     #job_getmatches()
-    #job_updatedb()xx
+    #job_updatedb()
     return
 
 

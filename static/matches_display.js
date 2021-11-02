@@ -47,16 +47,36 @@ function display_matches(teams, matches_array) {
         var matchPrediction = document.createElement('div');
         matchPrediction.setAttribute('class', 'matchPrediction')
         matchPrediction.setAttribute('id', 'matchPrediction_' + i)
-        var button = document.createElement("button");
-        button.innerHTML = "Predict";
-        button.setAttribute("class", "predictButton")
-        button.setAttribute("data-team1", team1_name.textContent)
-        button.setAttribute("data-team2", team2_name.textContent)
-        button.setAttribute("data-team1_odds", matches_array[i].team1_odds)
-        button.setAttribute("data-flag", '')
+        var but = document.createElement("button");
+        but.innerHTML = "Predict";
+        //button.setAttribute("class", "predictButton")
+        but.setAttribute("data-team1", team1_name.textContent)
+        but.setAttribute("data-team2", team2_name.textContent)
+        but.setAttribute("data-team1_odds", matches_array[i].team1_odds)
+        but.setAttribute("data-flag", '')
         matchID = 'matchPrediction_' + i
-        button.setAttribute("data-predictionID", matchID)
-        button.onclick = function () {
+        but.setAttribute("data-predictionID", matchID)
+
+        //button.setAttribute()
+        but.style.padding = "0.5em 1.4em"
+        but.style.margin = "0.1em 0.1em 0.1em 0.1em"
+        but.style.border = "0.16em solid rgb(0, 0, 0)"
+        but.style.borderRadius = "2em"
+        but.style.boxSizing = "border-box"
+        but.style.textDecoration = "none"
+        but.style.fontFamily = "Roboto"
+        but.style.fontWeight = "300"
+        but.style.color = "#570000" 
+        but.style.textShadow = "0 0.04em 0.04em rgba(0,0,0,0.35)"
+        but.style.textAlign = "center"
+        but.style.transition = "all 0.2s"
+
+
+        but.addEventListener("mouseover", x)
+        but.addEventListener("mouseout", y)
+        but.addEventListener("click", z)
+
+        but.onclick = function () {
             if (this.dataset.flag == '') {
                 this.dataset.flag = 'button_clicked'
                 team1_name_str = this.dataset.team1.replace(/\s/g, '')
@@ -75,13 +95,13 @@ function display_matches(teams, matches_array) {
                 team1_probability = document.createElement('p')
                 team1_probability.setAttribute("class", "team1_probability")
                 //team1_probability.textContent += ((Math.round(data["Probability_1"] * 1000)) / 10) + "%"
-                team1_probability.textContent += this.dataset.team1_odds
+                team1_probability.textContent += this.dataset.team1_odds + '%'
                 team2_probability = document.createElement('p')
                 team1_probability.setAttribute("id", 'prediction1_for_' + MATCH_ID)
                 team2_probability.setAttribute("id", 'prediction2_for_' + MATCH_ID)
                 team2_probability.setAttribute("class", "team2_probability")
                 //team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
-                team2_probability.textContent += 100 - this.dataset.team1_odds
+                team2_probability.textContent += (100 - this.dataset.team1_odds) + '%'
                 matchPrediction = document.getElementById(MATCH_ID)
                 matchPrediction.appendChild(team1_probability)
                 matchPrediction.appendChild(team2_probability)
@@ -102,7 +122,7 @@ function display_matches(teams, matches_array) {
         };
         //display the results
         console.log("almost done")
-        matchPrediction.appendChild(button)
+        matchPrediction.appendChild(but)
         MatchHeader.appendChild(timeMatch);
         team1_div.appendChild(team1_name);
         team1_div.appendChild(team1_img);
@@ -120,6 +140,25 @@ function display_matches(teams, matches_array) {
         // }
     }
 
+}
+
+
+function x(evt) {
+    console.log("AAA")
+    evt.target.style.borderColor = "rgb(255,255,255)"
+}
+
+function y(evt) {
+    evt.target.style.border = "0.16em solid rgb(0, 0, 0)"
+}
+
+function z(evt) {
+    if (evt.target.innerHTML == "Predict") {
+        evt.target.innerHTML = "Hide"
+    }
+    else {
+        evt.target.innerHTML = "Predict";
+    }
 }
 
 
