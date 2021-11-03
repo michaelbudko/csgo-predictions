@@ -47,6 +47,7 @@ function display_matches(teams, matches_array) {
         var matchPrediction = document.createElement('div');
         matchPrediction.setAttribute('class', 'matchPrediction')
         matchPrediction.setAttribute('id', 'matchPrediction_' + i)
+
         var but = document.createElement("button");
         but.innerHTML = "Predict";
         //button.setAttribute("class", "predictButton")
@@ -54,6 +55,7 @@ function display_matches(teams, matches_array) {
         but.setAttribute("data-team2", team2_name.textContent)
         but.setAttribute("data-team1_odds", matches_array[i].team1_odds)
         but.setAttribute("data-flag", '')
+
         matchID = 'matchPrediction_' + i
         but.setAttribute("data-predictionID", matchID)
 
@@ -102,6 +104,8 @@ function display_matches(teams, matches_array) {
                 team2_probability.setAttribute("class", "team2_probability")
                 //team2_probability.textContent += ((Math.round(data["Probability_2"] * 1000)) / 10) + "%"
                 team2_probability.textContent += (100.00 - this.dataset.team1_odds).toFixed(1)+ '%'
+
+
                 matchPrediction = document.getElementById(MATCH_ID)
                 matchPrediction.appendChild(team1_probability)
                 matchPrediction.appendChild(team2_probability)

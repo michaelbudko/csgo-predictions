@@ -345,7 +345,6 @@ def past():
     return render_template('past.html', past_matches = past_matches, teams = TEAMS, team_stats = team_stats)
 
 def cmp_matches(a, b):
-    #18.10.2021, 06:30CET
     a = a["match_date"]
     b = b["match_date"]
     try:
@@ -691,8 +690,8 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
+    job_getstats()
     update_match_time()
-    #job_getstats()
     #add_matches()
     #job_getmatches()
     #job_updatedb()
