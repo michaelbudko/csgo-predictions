@@ -566,6 +566,7 @@ def add_matches():
     # if not add to match_list
     # schedule remove match call at match_time + 60 mins
     # after match removed, decide who wins, add coef and add to predicted matches
+    # 
 
 @cron.interval_schedule(minutes = 90)
 def update_match_time():
