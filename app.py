@@ -137,7 +137,7 @@ TEAMS = {
     "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
     #"Heretics" : "8346/heretics",
-    "coL" : "5005/complexity",
+    #"coL" : "5005/complexity",
     "forZe" : "8135/forze",
     "FURIA" : "8297/furia",
     "Spirit" : "7020/spirit",
