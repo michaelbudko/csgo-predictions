@@ -574,6 +574,7 @@ def update_match_time():
     # "team2_name": team2_name,
     # "match_link": match_link,
     # "team1_odds": team1_odds
+    print("Updating Matches")
     for dict_match in matches:
         match = create_match()
         date_new = match["match_date"]
@@ -692,8 +693,8 @@ def job_updatedb():
 
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
-    update_match_time()
     job_getstats()
+    update_match_time()
     add_matches()
     #job_getmatches()
     #job_updatedb()
