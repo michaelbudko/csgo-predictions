@@ -1,3 +1,4 @@
+console.log("here")
 function display_matches(past_matches, teams) {
     past_matches = JSON.parse(past_matches)
     teams = JSON.parse(teams)
