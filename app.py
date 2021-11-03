@@ -630,7 +630,7 @@ def remove_match(match_id):
                 if x == 0:
                     x = 1
                 co1 = float("{:.2f}".format(random.random() + 1))
-                co2 = float("{:.2f}".format(4 - co1))
+                co2 = float("{:.2f}".format(3.2 - co1))
                 prediction = MatchPredictions(match_id, match_to_remove["match_date"], match_to_remove["team1_name"], match_to_remove["team2_name"], match_to_remove["match_link"], winner, response.get("Probability_1"), response.get("Probability_2"), x, co1, co2)
                 db.session.add(prediction)
                 db.session.commit()
@@ -692,8 +692,8 @@ def job_updatedb():
 @cron.interval_schedule(seconds = 5, max_runs = 1)
 def job_init():
     update_match_time()
-    #job_getstats()
-    #add_matches()
+    job_getstats()
+    add_matches()
     #job_getmatches()
     #job_updatedb()
     return
