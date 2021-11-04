@@ -109,7 +109,24 @@ matches = [
         "match_link" : "csgolounge.com",
         "match_date" : "05.11.2021, 16:00CET",
         "team1_odds": 63.9
+    },
+    {
+        "team1_name" : "G2",
+        "team2_name" : "FURIA",
+        "match_id" : 5,
+        "match_link" : "csgolounge.com",
+        "match_date" : "06.11.2021, 15:30CET",
+        "team1_odds": 54.2
+    },
+    {
+        "team1_name" : "Ence",
+        "team2_name" : "VP",
+        "match_id" : 6,
+        "match_link" : "csgolounge.com",
+        "match_date" : "06.11.2021, 18:45CET",
+        "team1_odds": 36.6
     }
+
 ]
 matches_discarded = []
 team_stats = {}
