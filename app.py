@@ -585,7 +585,7 @@ def create_match():
         }
 
 
-@cron.interval_schedule(minutes = 60)
+@cron.interval_schedule(minutes = 180)
 def add_matches():
     print("CALLED FUNCTION")
     x = 1
@@ -622,7 +622,7 @@ def update_match_time():
         dict_match["team1_odds"] = float("{:.1f}".format(random.random() + random.randrange(30, 75)))
     return
 
-@cron.interval_schedule(minutes = 70)
+@cron.interval_schedule(minutes = 190)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
@@ -664,7 +664,7 @@ def remove_match(match_id):
                 winner = random.randrange(1,3)
                 print("WINNER WINNER")
                 x = random.random()
-                if x < 0.85:
+                if x < 0.65:
                     x = winner
                 else:
                     x = 2 - winner
