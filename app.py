@@ -83,7 +83,7 @@ matches = [
         "team2_name": "Sprout",
         "match_id": 1,
         "match_link": "csgolounge.com",
-        "match_date": "05.11.2021, 15:30CET",
+        "match_date": "07.11.2021, 15:30CET",
         "team1_odds": 64.3
     },
     {
@@ -91,7 +91,7 @@ matches = [
         "team2_name": "OG",
         "match_id": 2,
         "match_link" : "csgolounge.com",
-        "match_date" : "05.11.2021, 15:30CET",
+        "match_date" : "07.11.2021, 15:30CET",
         "team1_odds": 67.2
     },
     {
@@ -99,7 +99,7 @@ matches = [
         "team2_name" : "FaZe",
         "match_id" : 3,
         "match_link" : "csgolounge.com",
-        "match_date" : "05.11.2021, 16:00CET",
+        "match_date" : "08.11.2021, 16:00CET",
         "team1_odds": 42.4
     },
     {
@@ -107,7 +107,7 @@ matches = [
         "team2_name" : "Liquid",
         "match_id" : 4,
         "match_link" : "csgolounge.com",
-        "match_date" : "05.11.2021, 16:00CET",
+        "match_date" : "08.11.2021, 16:00CET",
         "team1_odds": 63.9
     },
     {
@@ -115,7 +115,7 @@ matches = [
         "team2_name" : "FURIA",
         "match_id" : 5,
         "match_link" : "csgolounge.com",
-        "match_date" : "05.11.2021, 17:00CET",
+        "match_date" : "08.11.2021, 17:00CET",
         "team1_odds": 54.2
     },
     {
@@ -123,7 +123,7 @@ matches = [
         "team2_name" : "Spirit",
         "match_id" : 6,
         "match_link" : "csgolounge.com",
-        "match_date" : "06.11.2021, 18:45CET",
+        "match_date" : "08.11.2021, 18:45CET",
         "team1_odds": 72.3
     },
     {
@@ -131,7 +131,7 @@ matches = [
         "team2_name" : "VP",
         "match_id" : 7,
         "match_link" : "csgolounge.com",
-        "match_date" : "06.11.2021, 18:45CET",
+        "match_date" : "08.11.2021, 18:45CET",
         "team1_odds": 36.6
     }
 
@@ -145,8 +145,8 @@ TEAMS = {
   "Fnatic": "4991/fnatic",
   #"Astralis": "6665/astralis",
  #  "mousesports" : "4494/mousesports", 
-  "G2" : "5995/g2",
-  "Liquid" : "5973/liquid",
+ "G2" : "5995/g2",
+ "Liquid" : "5973/liquid",
 #  "EG" : "10399/evil-geniuses",
   "FaZe" : "6667/faze",
  # "100 Thieves" : "8474/100-thieves",
@@ -154,21 +154,21 @@ TEAMS = {
   "OG" : "10503/og",
   "BIG" : "7532/big",
  # "mibr" : "9215/mibr",
-   "Ence" : "4869/ence",
+"Ence" : "4869/ence",
   #"Godsent" : "6902/godsent",
     # "Renegades" : "6211/renegades",
   #  "Cloud9" : "5752/cloud9",
-    "Sprout" : "8637/sprout",
+#  "Sprout" : "8637/sprout",
     "Vitality" : "9565/vitality",
     # "pro100" : "7898/pro100",
     #"Heretics" : "8346/heretics",
     #"coL" : "5005/complexity",
-#    "forZe" : "8135/forze",
-    "FURIA" : "8297/furia",
+   # "forZe" : "8135/forze",
+   "FURIA" : "8297/furia",
     "Spirit" : "7020/spirit",
   #"North" : "7533/north",
 #   "HAVU" : 7865/havu",
-    "VP" : "5378/virtuspro",
+  "VP" : "5378/virtuspro",
     # "MAD Lions" : "8362/mad-lions"
  #"Gen.G" : "10514/geng",
 #  'Winstrike': '9183/winstrike',
@@ -508,12 +508,10 @@ def create_match():
 
     chosenTime = 30 * random.randrange(1,2)
 
-    minz -= chosenTime
+    minz += chosenTime
 
-    if (minz < 0):
-        minz = minz * -1
     
-    hrz -= (int)(minz/60)
+    hrz += (int)(minz/60)
 
     minz %= 60
 
@@ -523,23 +521,30 @@ def create_match():
     if (hrz < 0):
         hrz = 23
 
-    dayz -= (int)(hrz/23)
+    dayz += (int)(hrz/23)
+
+    hrz %= 24
 
     if (hrz < 10):
         hrz = "0" + str(hrz)
 
-    monthz -= (int)(dayz/31)
+    monthz += (int)(dayz/31)
     dayz %= 31
+
     if (dayz < 10):
         dayz = "0" + str(dayz)
     
 
-    yearz -= (int)(monthz/12)
+    yearz += (int)(monthz/12)
+
     monthz %= 12
+
     if (monthz < 10):
         monthz = "0" + str(monthz)
 
-    match_date = str(dayz) + "." + str(monthz) + "." + str(yearz) + ", " + str(hrz) + ":" + str(minz) + "CET"
+    print(str(dayz) + '.' + str(monthz) + '.' + str(yearz) + ', ' + str(hrz) + ':' + str(minz) + "CET")
+
+    match_date = str(dayz) + '.' + str(monthz) + '.' + str(yearz) + ', ' + str(hrz) + ':' + str(minz) + "CET"
 
     teamNum = random.randrange(0, len(TEAMS))
 
@@ -580,10 +585,10 @@ def create_match():
         }
 
 
-@cron.interval_schedule(minutes = 300)
+@cron.interval_schedule(minutes = 60)
 def add_matches():
     print("CALLED FUNCTION")
-    x = random.randrange(1, 3)
+    x = 1
     for count in range(x):
         new_match = create_match()
         for dict_match in matches_list:
@@ -617,7 +622,7 @@ def update_match_time():
         dict_match["team1_odds"] = float("{:.1f}".format(random.random() + random.randrange(30, 75)))
     return
 
-@cron.interval_schedule(minutes = 120)
+@cron.interval_schedule(minutes = 70)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
@@ -659,7 +664,7 @@ def remove_match(match_id):
                 winner = random.randrange(1,3)
                 print("WINNER WINNER")
                 x = random.random()
-                if x > 0.75:
+                if x < 0.85:
                     x = winner
                 else:
                     x = 2 - winner
