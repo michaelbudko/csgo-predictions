@@ -91,7 +91,7 @@ matches = [
         "team2_name": "OG",
         "match_id": 2,
         "match_link" : "csgolounge.com",
-        "match_date" : "10.11.2021, 16:30CET",
+        "match_date" : "10.11.2021, 16:45CET",
         "team1_odds": 53.9
     },
     {
@@ -99,7 +99,7 @@ matches = [
         "team2_name" : "FaZe",
         "match_id" : 3,
         "match_link" : "csgolounge.com",
-        "match_date" : "10.11.2021, 16:30CET",
+        "match_date" : "10.11.2021, 19:30CET",
         "team1_odds": 42.4
     },
     {
@@ -585,7 +585,7 @@ def create_match():
         }
 
 
-@cron.interval_schedule(minutes = 180)
+@cron.interval_schedule(minutes = 200)
 def add_matches():
     print("CALLED FUNCTION")
     x = 1
@@ -622,7 +622,7 @@ def update_match_time():
         dict_match["team1_odds"] = float("{:.1f}".format(random.random() + random.randrange(30, 75)))
     return
 
-@cron.interval_schedule(minutes = 190)
+@cron.interval_schedule(minutes = 210)
 def remove_helper():
     print("remove helper called")
     matches_to_remove = []
