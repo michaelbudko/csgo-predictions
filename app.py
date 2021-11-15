@@ -165,7 +165,7 @@ TEAMS = {
     #"coL" : "5005/complexity",
    # "forZe" : "8135/forze",
    "FURIA" : "8297/furia",
-    "Spirit" : "7020/spirit",
+    #"Spirit" : "7020/spirit",
   #"North" : "7533/north",
 #   "HAVU" : 7865/havu",
   "VP" : "5378/virtuspro",
@@ -664,11 +664,11 @@ def remove_match(match_id):
                 winner = random.randrange(1,3)
                 print("WINNER WINNER")
                 x = random.random()
-                if x < 0.65:
+                if x < 0.5:
                     x = winner
+                elif winner == 1:
+                    x = 2
                 else:
-                    x = 2 - winner
-                if x == 0:
                     x = 1
                 co1 = float("{:.2f}".format(random.random() + 1))
                 co2 = float("{:.2f}".format(3.2 - co1))
