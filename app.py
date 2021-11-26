@@ -25,7 +25,7 @@ if ENV == 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Qwertyu7@localhost:5430/match_predictions_db'
 else:
     app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://laceytptczrvpl:f6ff6a957921c789abc9fbe331e5fe1b4d0a88343511bcb38ad86f5e997ed706@ec2-54-147-209-121.compute-1.amazonaws.com:5432/dnr9intjchd5a'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://huwspzpvjeorbo:6ace8414b0a60331c6153a91ca9285bd36ac58de64e29e3bb8dab350c6bfcca6@ec2-3-230-26-112.compute-1.amazonaws.com:5432/dekq5m0t1gtga1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
