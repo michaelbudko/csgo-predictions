@@ -83,7 +83,7 @@ matches = [
         "team2_name": "Sprout",
         "match_id": 1,
         "match_link": "csgolounge.com",
-        "match_date": "06.12.2021, 13:30CET",
+        "match_date": "12.12.2021, 13:30CET",
         "team1_odds": 76.3
     },
     {
@@ -91,7 +91,7 @@ matches = [
         "team2_name": "OG",
         "match_id": 2,
         "match_link" : "csgolounge.com",
-        "match_date" : "06.12.2021, 16:45CET",
+        "match_date" : "12.12.2021, 16:45CET",
         "team1_odds": 53.9
     },
     {
@@ -99,7 +99,7 @@ matches = [
         "team2_name" : "FaZe",
         "match_id" : 3,
         "match_link" : "csgolounge.com",
-        "match_date" : "06.12.2021, 19:30CET",
+        "match_date" : "12.12.2021, 19:30CET",
         "team1_odds": 42.4
     },
     {
@@ -107,7 +107,7 @@ matches = [
         "team2_name" : "Liquid",
         "match_id" : 4,
         "match_link" : "csgolounge.com",
-        "match_date" : "07.12.2021, 17:00CET",
+        "match_date" : "13.12.2021, 17:00CET",
         "team1_odds": 63.9
     },
     {
@@ -115,7 +115,7 @@ matches = [
         "team2_name" : "FURIA",
         "match_id" : 5,
         "match_link" : "csgolounge.com",
-        "match_date" : "07.12.2021, 17:00CET",
+        "match_date" : "13.12.2021, 17:00CET",
         "team1_odds": 54.2
     },
     {
@@ -123,7 +123,7 @@ matches = [
         "team2_name" : "Spirit",
         "match_id" : 6,
         "match_link" : "csgolounge.com",
-        "match_date" : "07.12.2021, 18:45CET",
+        "match_date" : "13.12.2021, 18:45CET",
         "team1_odds": 72.3
     },
     {
@@ -131,7 +131,7 @@ matches = [
         "team2_name" : "VP",
         "match_id" : 7,
         "match_link" : "csgolounge.com",
-        "match_date" : "07.12.2021, 18:45CET",
+        "match_date" : "13.12.2021, 18:45CET",
         "team1_odds": 36.6
     }
 #ll
